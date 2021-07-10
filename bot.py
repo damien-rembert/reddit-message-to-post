@@ -25,10 +25,10 @@ while True:
         print(redditorIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
-            print(f"User: {user.name}")
+            # print(f"User: {user.name}")
             if redditor1 == user.name:
                 redditorIsTrusted = True
-        print(redditorIsTrusted)
+        # print(redditorIsTrusted)
         # print("karma is " + redditorKarma) # not working as karma is an int
         # sender does not have enough karma
         if redditorKarma < minKarma:
