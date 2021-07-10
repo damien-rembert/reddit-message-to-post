@@ -33,18 +33,21 @@ while True:
         # sender does not have enough karma
         if redditorKarma < minKarma:
             message.mark_read()
-            break
+            # break
         # if the message is not a comment reply
         if message.was_comment:
             message.mark_read()
-            break
+            # break
         else:
             # do stuff with the message/parse message
             title = message.subject
             body = message.body
             reddit.subreddit("***REMOVED***").submit(title, url=body)
             message.mark_read()
-            break
+            # break
+    # sleep one minute
+    time.sleep(60)
+    # time.sleep(900)
 """
              # admins can trust/untrust/block/unblock
             if title == "Trust" and redditorIsTrusted:
@@ -64,6 +67,4 @@ while True:
                 message.mark_read()
                 break
 """
-    # sleep one minute
-    # time.sleep(60)
-    # time.sleep(900)
+
