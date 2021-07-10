@@ -5,11 +5,11 @@ import time
 
 while True:
     reddit = praw.Reddit(
-    # client_id="***REMOVED***",
-    # client_secret="***REMOVED***",
-    # password="***REMOVED***",
-    # user_agent="***REMOVED***",
-    # username="***REMOVED***"
+    client_id="***REMOVED***",
+    client_secret="***REMOVED***",
+    password="***REMOVED***",
+    user_agent="***REMOVED***",
+    username="***REMOVED***"
     )
 
     # go through unread mail
@@ -45,10 +45,6 @@ while True:
             reddit.subreddit("***REMOVED***").submit(title, url=body)
             message.mark_read()
             break
-    # sleep one minute
-    time.sleep(60)
-    # time.sleep(900)
-
 """
              # admins can trust/untrust/block/unblock
             if title == "Trust" and redditorIsTrusted:
@@ -68,3 +64,6 @@ while True:
                 message.mark_read()
                 break
 """
+    # sleep one minute
+    time.sleep(60)
+    # time.sleep(900)
