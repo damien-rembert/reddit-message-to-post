@@ -5,11 +5,11 @@ import time
 
 while True:
     reddit = praw.Reddit(
-    client_id="***REMOVED***",
-    client_secret="***REMOVED***",
-    password="***REMOVED***",
-    user_agent="***REMOVED***",
-    username="***REMOVED***"
+    # client_id="***REMOVED***",
+    # client_secret="***REMOVED***",
+    # password="***REMOVED***",
+    # user_agent="***REMOVED***",
+    # username="***REMOVED***"
     )
 
     # go through unread mail
@@ -21,13 +21,13 @@ while True:
         # get redditor karma
         redditorKarma = redditor1.link_karma
         minKarma = 50
-        redditorIsTrusted = False
-        print(redditorIsTrusted)
-        trusted_users = reddit.user.trusted()
-        for user in trusted_users:
+        # redditorIsTrusted = False
+        # print(redditorIsTrusted)
+        # trusted_users = reddit.user.trusted()
+        # for user in trusted_users:
             # print(f"User: {user.name}")
-            if redditor1 == user.name:
-                redditorIsTrusted = True
+        #     if redditor1 == user.name:
+        #         redditorIsTrusted = True
         # print(redditorIsTrusted)
         # print("karma is " + redditorKarma) # not working as karma is an int
         # sender does not have enough karma
@@ -42,7 +42,11 @@ while True:
             # do stuff with the message/parse message
             title = message.subject
             body = message.body
-            # admins can trust/untrust/block/unblock
+            reddit.subreddit("***REMOVED***").submit(title, url=body)
+            message.mark_read()
+            break
+"""
+             # admins can trust/untrust/block/unblock
             if title == "Trust" and redditorIsTrusted:
                 reddit.redditor(body).trust()
                 break
@@ -55,10 +59,12 @@ while True:
             if title == "Unblock" and redditorIsTrusted:
                 reddit.redditor(body).unblock()
                 break
-            else:
+            else:           
                 reddit.subreddit("***REMOVED***").submit(title, url=body)
                 message.mark_read()
                 break
+""" 
+
     # sleep one minute
     time.sleep(60)
     # time.sleep(900)
