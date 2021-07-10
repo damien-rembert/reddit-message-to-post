@@ -65,5 +65,5 @@ while True:
                 break
 """
     # sleep one minute
-    time.sleep(60)
+    # time.sleep(60)
     # time.sleep(900)
