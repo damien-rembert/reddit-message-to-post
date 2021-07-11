@@ -60,25 +60,57 @@ while True:
             title = message.subject
             body = message.body
             if title == "Trust" and senderIsTrusted:
-                message_content = "body of the message: "
-                message_content = body
-                message.reply(message_content)
-                reddit.redditor(body).trust()
-                message.mark_read()
-            elif title == "Untrust" and senderIsTrusted:
-                reddit.redditor(body).distrust()
-                message.mark_read()
+                try:
+                    reddit.redditor(body).trust()
+                    message.mark_read()
+                except:
+                    message_content = title + body
+                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT TRUSTING", message_content)
+                    message.mark_read()
+            elif title == "Distrust" and senderIsTrusted:
+                try:
+                    reddit.redditor(body).distrust()
+                    message.mark_read()
+                except:
+                    message_content = title + body
+                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
+                    message.mark_read()
+                # reddit.redditor(body).distrust()
+                # message.mark_read()
             elif title == "Block" and senderIsTrusted:
-                reddit.redditor(body).block()
-                message.mark_read()
+                try:
+                    reddit.redditor(body).block()
+                    message.mark_read()
+                except:
+                    message_content = title + body
+                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT BLOCKING", message_content)
+                    message.mark_read()
+                # reddit.redditor(body).block()
+                # message.mark_read()
             elif title == "Unblock" and senderIsTrusted:
-                reddit.redditor(body).unblock()
-                message.mark_read()
-            else:           
-                reddit.subreddit("***REMOVED***").submit(title, url=body)
-                message_content = message_content + body
-                message.reply(message_content)                
-                message.mark_read()
+                try:
+                    reddit.redditor(body).unblock()
+                    message.mark_read()
+                except:
+                    message_content = title + body
+                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
+                    message.mark_read()
+                # reddit.redditor(body).unblock()
+                # message.mark_read()
+            else:
+                try:
+                    reddit.subreddit("***REMOVED***").submit(title, url=body)
+                    message_content = message_content + body
+                    message.reply(message_content)                
+                    message.mark_read()
+                except:
+                    message_content = title + body
+                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT POSTING", message_content)
+                    message.mark_read()
+                # reddit.subreddit("***REMOVED***").submit(title, url=body)
+                # message_content = message_content + body
+                # message.reply(message_content)                
+                # message.mark_read()
     # sleep one minute
     time.sleep(60)
     # time.sleep(900)
