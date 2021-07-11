@@ -12,13 +12,13 @@ while True:
     password = os.environ['MDP']
     username = os.environ['NOM']
     user_agent = "***REMOVED***"
-    
+
     reddit = praw.Reddit(
     client_id,
     client_secret,
     password,
     user_agent,
-    username,
+    username
     )
 
     # go through unread mail
