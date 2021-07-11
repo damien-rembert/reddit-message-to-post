@@ -40,6 +40,8 @@ while True:
         # set minimum karma needed
         minKarma = 50
         senderIsTrusted = False
+        body = ""
+        title = ""
         # print(senderIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
@@ -58,16 +60,24 @@ while True:
             title = message.subject
             body = message.body
             if title == "Trust" and senderIsTrusted:
+                message_content = "body of the message: "
+                message_content = body
+                message.reply(message_content)
                 reddit.redditor(body).trust()
+                message.mark_read()
             elif title == "Untrust" and senderIsTrusted:
-                # reddit.redditor("hereandnotthere").distrust()
                 reddit.redditor(body).distrust()
+                message.mark_read()
             elif title == "Block" and senderIsTrusted:
                 reddit.redditor(body).block()
+                message.mark_read()
             elif title == "Unblock" and senderIsTrusted:
                 reddit.redditor(body).unblock()
+                message.mark_read()
             else:           
                 reddit.subreddit("***REMOVED***").submit(title, url=body)
+                message_content = message_content + body
+                message.reply(message_content)                
                 message.mark_read()
     # sleep one minute
     time.sleep(60)
