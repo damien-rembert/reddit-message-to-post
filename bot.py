@@ -101,7 +101,8 @@ while True:
                 try:
                     reddit.subreddit("***REMOVED***").submit(title, url=body)
                     message_content = message_content + body
-                    message.reply(message_content)                
+                    message.reply(message_content)     
+                    reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)           
                     message.mark_read()
                 except:
                     message_content = title + body
