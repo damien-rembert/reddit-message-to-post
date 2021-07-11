@@ -60,8 +60,8 @@ while True:
             if title == "Trust" and senderIsTrusted:
                 reddit.redditor(body).trust()
             elif title == "Untrust" and senderIsTrusted:
-                reddit.redditor("hereandnotthere").untrust()
-                # reddit.redditor(body).untrust()
+                # reddit.redditor("hereandnotthere").distrust()
+                reddit.redditor(body).distrust()
             elif title == "Block" and senderIsTrusted:
                 reddit.redditor(body).block()
             elif title == "Unblock" and senderIsTrusted:
