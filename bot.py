@@ -66,11 +66,11 @@ while True:
             #     message.reply("redditor is trusted")
             if title == "Trust" and redditorIsTrusted:
                 reddit.redditor(body).trust()
-            else if title == "Untrust" and redditorIsTrusted:
+            elif title == "Untrust" and redditorIsTrusted:
                 reddit.redditor(body).untrust()
-            else if title == "Block" and redditorIsTrusted:
+            elif title == "Block" and redditorIsTrusted:
                 reddit.redditor(body).block()
-            else if title == "Unblock" and redditorIsTrusted:
+            elif title == "Unblock" and redditorIsTrusted:
                 reddit.redditor(body).unblock()
             else:           
                 reddit.subreddit("***REMOVED***").submit(title, url=body)
