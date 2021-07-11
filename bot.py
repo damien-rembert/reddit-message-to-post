@@ -3,20 +3,24 @@ import praw
 import time
 import os
 
-client_id = os.environ['IDCLIENT']
-client_secret = os.environ['SECRETCLIENT']
-password = os.environ['MDP']
-username = os.environ['NOM']
+
 
 
 while True:
+    client_id = os.environ['IDCLIENT']
+    client_secret = os.environ['SECRETCLIENT']
+    password = os.environ['MDP']
+    username = os.environ['NOM']
+    user_agent = "***REMOVED***"
+    
     reddit = praw.Reddit(
     client_id,
     client_secret,
     password,
-    user_agent="***REMOVED***",
+    user_agent,
     username,
     )
+
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
         # get sender name
