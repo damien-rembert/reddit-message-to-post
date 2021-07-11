@@ -105,12 +105,12 @@ while True:
             else:
                 try:
                     if " " in body:
-                        reddit.subreddit("***REMOVED***").submit(title, url=body)
+                        reddit.subreddit("***REMOVED***").submit(title, selftext=body)
                         # message_content = message_content + body
                         # reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)           
                         message.mark_read()
                     else:
-                        reddit.subreddit("***REMOVED***").submit(title, selftext=body)
+                        reddit.subreddit("***REMOVED***").submit(title, url=body)
                         message.mark_read()
                 except:
                     message_content = title + spacing + body
