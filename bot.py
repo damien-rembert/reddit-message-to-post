@@ -7,20 +7,29 @@ import os
 
 
 while True:
-    client_id = os.environ['IDCLIENT']
-    client_secret = os.environ['SECRETCLIENT']
-    password = os.environ['MDP']
-    username = os.environ['NOM']
-    user_agent = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
+    # client_id = os.environ['IDCLIENT']
+    # client_secret = os.environ['SECRETCLIENT']
+    # password = os.environ['MDP']
+    # username = os.environ['NOM']
+    # user_agent = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
+
+    reddit = praw.Reddit(
+    client_id="***REMOVED***",
+    client_secret="***REMOVED***",
+    password="***REMOVED***",
+    user_agent="***REMOVED***",
+    username="***REMOVED***"
+    )
 
     # reddit = praw.Reddit(client_id,client_secret,password,user_agent,username)
-    reddit = praw.Reddit(
-    client_id,
-    client_secret,
-    user_agent,
-    username,
-    password,
-)
+
+    # reddit = praw.Reddit(
+    # client_id,
+    # client_secret,
+    # user_agent,
+    # username,
+    # password,
+    # )
 
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
