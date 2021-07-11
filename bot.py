@@ -42,6 +42,7 @@ while True:
         senderIsTrusted = False
         body = ""
         title = ""
+        spacing = " "
         # print(senderIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
@@ -64,7 +65,7 @@ while True:
                     reddit.redditor(body).trust()
                     message.mark_read()
                 except:
-                    message_content = title + body
+                    message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT TRUSTING", message_content)
                     message.mark_read()
             elif title == "Distrust" and senderIsTrusted:
@@ -72,7 +73,7 @@ while True:
                     reddit.redditor(body).distrust()
                     message.mark_read()
                 except:
-                    message_content = title + body
+                    message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
                     message.mark_read()
                 # reddit.redditor(body).distrust()
@@ -82,7 +83,7 @@ while True:
                     reddit.redditor(body).block()
                     message.mark_read()
                 except:
-                    message_content = title + body
+                    message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT BLOCKING", message_content)
                     message.mark_read()
                 # reddit.redditor(body).block()
@@ -92,7 +93,7 @@ while True:
                     reddit.redditor(body).unblock()
                     message.mark_read()
                 except:
-                    message_content = title + body
+                    message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
                     message.mark_read()
                 # reddit.redditor(body).unblock()
@@ -100,12 +101,11 @@ while True:
             else:
                 try:
                     reddit.subreddit("***REMOVED***").submit(title, url=body)
-                    message_content = message_content + body
-                    message.reply(message_content)     
-                    reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)           
+                    # message_content = message_content + body
+                    # reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)           
                     message.mark_read()
                 except:
-                    message_content = title + body
+                    message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT POSTING", message_content)
                     message.mark_read()
                 # reddit.subreddit("***REMOVED***").submit(title, url=body)
