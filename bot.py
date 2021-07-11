@@ -46,7 +46,7 @@ while True:
             # print(f"User: {user.name}")
             if redditor1 == user.name:
                 redditorIsTrusted = True
-        print(redditorIsTrusted)
+        # print(redditorIsTrusted)
         # sender does not have enough karma
         if redditorKarma < minKarma:
             message.mark_read()
@@ -58,19 +58,19 @@ while True:
             title = message.subject
             body = message.body
             # admins can trust/untrust/block/unblock
-            if title == "Testoune" and redditorIsTrusted:
-                message.reply("recognised title as testoune and redditor is trusted")
-            if title == "Testoune" and redditorIsTrusted:
-                message.reply("recognised title as testoune")
-            if title == "Testoune" and redditorIsTrusted:
-                message.reply("redditor is trusted")
+            # if title == "Testoune" and redditorIsTrusted:
+            #     message.reply("recognised title as testoune and redditor is trusted")
+            # if title == "Testoune" and redditorIsTrusted:
+            #     message.reply("recognised title as testoune")
+            # if title == "Testoune" and redditorIsTrusted:
+            #     message.reply("redditor is trusted")
             if title == "Trust" and redditorIsTrusted:
                 reddit.redditor(body).trust()
-            if title == "Untrust" and redditorIsTrusted:
+            else if title == "Untrust" and redditorIsTrusted:
                 reddit.redditor(body).untrust()
-            if title == "Block" and redditorIsTrusted:
+            else if title == "Block" and redditorIsTrusted:
                 reddit.redditor(body).block()
-            if title == "Unblock" and redditorIsTrusted:
+            else if title == "Unblock" and redditorIsTrusted:
                 reddit.redditor(body).unblock()
             else:           
                 reddit.subreddit("***REMOVED***").submit(title, url=body)
