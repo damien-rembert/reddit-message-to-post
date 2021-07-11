@@ -34,21 +34,21 @@ while True:
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
         # get sender name
-        redditor1 = message.author
+        sender = message.author
         # get redditor karma
-        redditorKarma = redditor1.link_karma
+        senderKarma = sender.link_karma
         # set minimum karma needed
         minKarma = 50
-        redditorIsTrusted = False
-        print(redditorIsTrusted)
+        senderIsTrusted = False
+        # print(senderIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
             # print(f"User: {user.name}")
-            if redditor1 == user.name:
-                redditorIsTrusted = True
-        # print(redditorIsTrusted)
+            if sender == user.name:
+                senderIsTrusted = True
+        # print(senderIsTrusted)
         # sender does not have enough karma
-        if redditorKarma < minKarma:
+        if senderKarma < minKarma:
             message.mark_read()
         # if the message is not a comment reply
         if message.was_comment:
@@ -57,20 +57,14 @@ while True:
             # do stuff with the message/parse message
             title = message.subject
             body = message.body
-            # admins can trust/untrust/block/unblock
-            # if title == "Testoune" and redditorIsTrusted:
-            #     message.reply("recognised title as testoune and redditor is trusted")
-            # if title == "Testoune" and redditorIsTrusted:
-            #     message.reply("recognised title as testoune")
-            # if title == "Testoune" and redditorIsTrusted:
-            #     message.reply("redditor is trusted")
-            if title == "Trust" and redditorIsTrusted:
+            if title == "Trust" and senderIsTrusted:
                 reddit.redditor(body).trust()
-            elif title == "Untrust" and redditorIsTrusted:
-                reddit.redditor(body).untrust()
-            elif title == "Block" and redditorIsTrusted:
+            elif title == "Untrust" and senderIsTrusted:
+                reddit.redditor("hereandnothere").untrust()
+                # reddit.redditor(body).untrust()
+            elif title == "Block" and senderIsTrusted:
                 reddit.redditor(body).block()
-            elif title == "Unblock" and redditorIsTrusted:
+            elif title == "Unblock" and senderIsTrusted:
                 reddit.redditor(body).unblock()
             else:           
                 reddit.subreddit("***REMOVED***").submit(title, url=body)
