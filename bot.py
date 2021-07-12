@@ -68,7 +68,7 @@ while True:
                 except:
                     message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT TRUSTING", message_content)
-                    message.reply("il y a eu un problème u/***REMOVED*** a été informé")
+                    message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
             elif title == "Distrust" and senderIsTrusted:
                 try:
@@ -77,7 +77,7 @@ while True:
                 except:
                     message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
-                    message.reply("il y a eu un problème u/***REMOVED*** a été informé")
+                    message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
                 # reddit.redditor(body).distrust()
                 # message.mark_read()
@@ -88,7 +88,7 @@ while True:
                 except:
                     message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT BLOCKING", message_content)
-                    message.reply("il y a eu un problème u/***REMOVED*** a été informé")
+                    message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
                 # reddit.redditor(body).block()
                 # message.mark_read()
@@ -99,7 +99,7 @@ while True:
                 except:
                     message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
-                    message.reply("il y a eu un problème u/***REMOVED*** a été informé")
+                    message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
                 # reddit.redditor(body).unblock()
                 # message.mark_read()
