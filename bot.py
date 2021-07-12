@@ -6,6 +6,7 @@ import os
 
 # TODO mark mods from ***REMOVED*** as Trusted
 # TODO login without connection details in source code
+# TODO check that the url is on r/france
 # TODO define methods using def
 # TODO define report fault to ***REMOVED***
 # TODO define redditor.HasEnoughKarma(amountOfKarmaNeeded)
