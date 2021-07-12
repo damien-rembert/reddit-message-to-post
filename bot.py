@@ -42,7 +42,7 @@ while True:
         senderIsTrusted = False
         body = ""
         title = ""
-        spacing = " "
+        spacing = " - "
         # print(senderIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
@@ -50,6 +50,7 @@ while True:
             if sender == user.name:
                 senderIsTrusted = True
         # print(senderIsTrusted)
+        # TODO add mods from ***REMOVED*** to trusted
         # sender does not have enough karma
         if senderKarma < minKarma:
             message.mark_read()
