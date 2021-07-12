@@ -4,14 +4,16 @@ import time
 import os
 
 
+# TODO mark mods from ***REMOVED*** as Trusted
+# TODO login without connection details in source code
+# TODO define methods using def
+# TODO define report fault to ***REMOVED***
+# TODO define redditor.HasEnoughKarma(amountOfKarmaNeeded)
+# TODO define redditor.IsTrusted() returning bool
+# TODO improve fault reporting returning error to ***REMOVED***
 
 
 while True:
-    # client_id = os.environ['IDCLIENT']
-    # client_secret = os.environ['SECRETCLIENT']
-    # password = os.environ['MDP']
-    # username = os.environ['NOM']
-    # user_agent = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
 
     reddit = praw.Reddit(
     client_id="***REMOVED***",
@@ -20,6 +22,12 @@ while True:
     user_agent="***REMOVED***",
     username="***REMOVED***"
     )
+
+    # client_id = os.environ['IDCLIENT']
+    # client_secret = os.environ['SECRETCLIENT']
+    # password = os.environ['MDP']
+    # username = os.environ['NOM']
+    # user_agent = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
 
     # reddit = praw.Reddit(client_id,client_secret,password,user_agent,username)
 
@@ -43,6 +51,8 @@ while True:
         body = ""
         title = ""
         spacing = " - "
+        title = message.subject
+        body = message.body
         # print(senderIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
@@ -50,17 +60,16 @@ while True:
             if sender == user.name:
                 senderIsTrusted = True
         # print(senderIsTrusted)
-        # TODO add mods from ***REMOVED*** to trusted
         # sender does not have enough karma
         if senderKarma < minKarma:
+            message_content = title + spacing + body
+            reddit.redditor("***REMOVED***").message("REDDITOR WITH KARMA TOO LOW - CHECK AND POST", message_content)
             message.mark_read()
         # if the message is not a comment reply
         if message.was_comment:
             message.mark_read()
         else:
             # do stuff with the message/parse message
-            title = message.subject
-            body = message.body
             if title == "Trust" and senderIsTrusted:
                 try:
                     reddit.redditor(body).trust()
