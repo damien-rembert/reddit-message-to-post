@@ -23,21 +23,25 @@ import re
 
 while True:
 
-    reddit = praw.Reddit(
-    client_id="***REMOVED***",
-    client_secret="***REMOVED***",
-    password="***REMOVED***",
-    user_agent="***REMOVED***",
-    username="***REMOVED***"
-    )
+    # reddit = praw.Reddit(
+    # client_id="***REMOVED***",
+    # client_secret="***REMOVED***",
+    # password="***REMOVED***",
+    # user_agent="***REMOVED***",
+    # username="***REMOVED***"
+    # )
 
-    # client_id = os.environ['IDCLIENT']
-    # client_secret = os.environ['SECRETCLIENT']
-    # password = os.environ['MDP']
-    # username = os.environ['NOM']
-    # user_agent = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
+    client_id = ""
+    client_secret = ""
+    password = ""
+    username = ""
+    client_id = os.environ['IDCLIENT']
+    client_secret = os.environ['SECRETCLIENT']
+    password = os.environ['MDP']
+    username = os.environ['NOM']
+    user_agent = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
 
-    # reddit = praw.Reddit(client_id,client_secret,password,user_agent,username)
+    reddit = praw.Reddit(client_id,client_secret,password,user_agent,username)
 
     # reddit = praw.Reddit(
     # client_id,
