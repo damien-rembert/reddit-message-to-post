@@ -57,11 +57,10 @@ while True:
         senderIsTrusted = False
         body = ""
         title = ""
-        spacing = " - "
         message_content = ""
         title = message.subject
         body = message.body
-        message_content = title + spacing + body
+        message_content = "titre: " + title + " - corps: " + body
         # print(senderIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
@@ -71,8 +70,8 @@ while True:
         # print(senderIsTrusted)
         # sender does not have enough karma
         if senderKarma < minKarma:
-            reddit.redditor("***REMOVED***").message("REDDITOR WITH KARMA TOO LOW - CHECK AND POST", message_content)
-
+            reddit.redditor("***REMOVED***").message(sender + " n'a pas assez de karma - contrôler et poster", message_content)
+            reddit.subreddit("test").message("TEST", "test PM from PRAW")
             reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + sender + " vient d'essayer de poster sur r/***REMOVED***", message_content)
             message.mark_read()
         # if the message is not a comment reply
