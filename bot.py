@@ -48,7 +48,8 @@ while True:
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
         # get sender name
-        sender = message.author.name
+        sender = message.author
+        senderName = message.author.name
         # senderSaid = sender + " vient de poster sur r/***REMOVED***"
         # get redditor karma
         senderKarma = sender.link_karma
@@ -66,14 +67,14 @@ while True:
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
             # print(f"User: {user.name}")
-            if sender == user.name:
+            if senderName == user.name:
                 senderIsTrusted = True
         # print(senderIsTrusted)
         # sender does not have enough karma
         if senderKarma < minKarma:
-            reddit.redditor("***REMOVED***").message(sender + " n'a pas assez de karma - contrôler et poster", message_content)
+            reddit.redditor("***REMOVED***").message(senderName + " n'a pas assez de karma - contrôler et poster", message_content)
             # reddit.subreddit("test").message("TEST", "test PM from PRAW")
-            reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + sender + " vient d'essayer de poster sur r/***REMOVED***", message_content)
+            reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + senderName + " vient d'essayer de poster sur r/***REMOVED***", message_content)
             message.mark_read()
         # if the message is not a comment but a reply
         if message.was_comment:
@@ -127,14 +128,14 @@ while True:
                     if " " in body:
                         # reddit.subreddit("***REMOVED***").submit(title, selftext=body)
                         # message_content = message_content + body
-                        reddit.subreddit("***REMOVED***").message( sender + " vient de poster sur r/***REMOVED***", message_content)
+                        reddit.subreddit("***REMOVED***").message( senderName + " vient de poster sur r/***REMOVED***", message_content)
                         reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)   
                         # reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
                         # message.reply("il y a eu un problème, u/***REMOVED*** a été informé")       
                         message.mark_read()
                     elif "np.reddit" in body:
                         reddit.subreddit("***REMOVED***").submit(title, url=body)
-                        reddit.subreddit("***REMOVED***").message(sender + " vient de poster sur r/***REMOVED***", message_content)
+                        reddit.subreddit("***REMOVED***").message(senderName + " vient de poster sur r/***REMOVED***", message_content)
                         message.mark_read()
                     # elif "reddit" in body
                     # elif "/r/france" in body
