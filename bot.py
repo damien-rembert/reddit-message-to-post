@@ -47,34 +47,36 @@ while True:
 
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
+
+        # set minimum karma needed
+        minKarma = 50
+        # defaulting values
+        body = ""
+        title = ""
+        message_content = ""
+        spacing = " - "
+        senderIsTrusted = False
+        senderKarma = 0
+        senderName = ""
         # get sender name
         sender = message.author
         senderName = message.author.name
         # get redditor karma
         senderKarma = sender.link_karma
-        # set minimum karma needed
-        minKarma = 5000
-        senderIsTrusted = False
-        body = ""
-        title = ""
-        message_content = ""
-        spacing = " - "
         title = message.subject
         body = message.body
-        message_content = "titre: " + title + " - corps: " + body
-        # print(senderIsTrusted)
+        message_content = "TITRE: " + title + " - CORPS: " + body
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
             # print(f"User: {user.name}")
             if senderName == user.name:
                 senderIsTrusted = True
-        # print(senderIsTrusted)
-        # sender does not have enough karma
-        # if the message is not a comment but a reply
+                break
+        # ignore comments
         if message.was_comment:
             message.mark_read()
         else:
-            # do stuff with the message/parse message
+            # admin command 1 Trust
             if title == "Trust" and senderIsTrusted:
                 try:
                     reddit.redditor(body).trust()
@@ -84,6 +86,7 @@ while True:
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT TRUSTING", message_content)
                     message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
+            # admin command 2 Distrust
             elif title == "Distrust" and senderIsTrusted:
                 try:
                     reddit.redditor(body).distrust()
@@ -93,8 +96,7 @@ while True:
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
                     message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
-                # reddit.redditor(body).distrust()
-                # message.mark_read()
+            # admin command 3 Block
             elif title == "Block" and senderIsTrusted:
                 try:
                     reddit.redditor(body).block()
@@ -104,8 +106,7 @@ while True:
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT BLOCKING", message_content)
                     message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
-                # reddit.redditor(body).block()
-                # message.mark_read()
+            # admin command 4 unblock
             elif title == "Unblock" and senderIsTrusted:
                 try:
                     reddit.redditor(body).unblock()
@@ -115,7 +116,6 @@ while True:
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
                     message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
-                # reddit.redditor(body).unblock()
                 # message.mark_read()
             elif senderKarma > minKarma:
                 try:
@@ -128,9 +128,10 @@ while True:
                         # reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
                         # message.reply("il y a eu un problème, u/***REMOVED*** a été informé")       
                         message.mark_read()
-                    elif "np.reddit" in body:
+                    elif "np.reddit.com/r/***REMOVED***" in body:
+                    # elif "np.reddit.com/r/france" in body:
                         reddit.subreddit("***REMOVED***").submit(title, url=body)
-                        reddit.subreddit("***REMOVED***").message(senderName + " vient de poster sur r/***REMOVED***", message_content)
+                        reddit.subreddit("***REMOVED***").message(senderName + " vient de poster sur r/***REMOVED***: ", message_content)
                         message.mark_read()
                     # elif "reddit" in body
                     # elif "/r/france" in body
@@ -141,7 +142,7 @@ while True:
             elif senderKarma <= minKarma:
                 # reddit.redditor("***REMOVED***").message(senderName + " n'a pas assez de karma - contrôler et poster", message_content)
                 # reddit.subreddit("test").message("TEST", "test PM from PRAW")
-                reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + senderName + " vient d'essayer de poster sur r/***REMOVED***", message_content)
+                reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté (à contrôler et poster pour ce redditeur?) - " + senderName + " vient d'essayer de poster sur r/***REMOVED***: ", message_content)
                 message.mark_read()
                 # reddit.subreddit("***REMOVED***").submit(title, url=body)
                 # message_content = message_content + body
