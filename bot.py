@@ -5,9 +5,9 @@ import os
 import re
 
 
-# TODO set karma
+# TODO ask mods about minimum karma
 # TODO replace ***REMOVED*** with ***REMOVED***
-# TODO improve fault reporting returning error to ***REMOVED***
+# TODO improve fault reporting
 
 # TODO np.reddit.com instead of www.reddit.com
 # TODO check that the url is on r/france
@@ -139,8 +139,14 @@ while True:
                 # message.mark_read()
             elif senderKarma > minKarma:
                 try:
-                    if "np.reddit.com/r/***REMOVED***" in body:
-                    # if "np.reddit.com/r/france" in body:
+                    if " " in body:
+                        # reddit.subreddit(selectedSub).submit(title, selftext=body)
+                        message.reply("Ce bot n'accepte actuellement que les message dont le corps est un lien vers r/France. Merci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
+                        reddit.subreddit(selectedSub).message("Post refusé: le corps du message contient un caractère interdit n'est pas sur r/france " +senderName + " vient d'essayer de poster anonymement sur r/" + selectedSub + ":", message_content)
+                        message.mark_read()
+                    elif "np.reddit.com/r/***REMOVED***/" in body:
+                    # if "np.reddit.com/r/france/" in body:
+                    # if "r/france/" in body:
                         reddit.subreddit(selectedSub).submit(title, url=body)
                         reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
                         message.mark_read()
@@ -148,7 +154,7 @@ while True:
                     # elif " " in body:
                         # reddit.subreddit(selectedSub).submit(title, selftext=body)
                         message.reply("Ce bot n'accepte actuellement que les message dont le corps est un lien vers r/France. Merci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
-                        reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
+                        reddit.subreddit(selectedSub).message("Post refusé: le corps du message ne semble pas contenir de lien vers r/france. " + senderName + " vient d'essayer de poster anonymement sur r/" + selectedSub + ":", message_content)
                         message.mark_read()
                     # elif "reddit" in body
                     # elif "/r/france" in body
@@ -158,6 +164,7 @@ while True:
                     message.mark_read()
             elif senderKarma <= minKarma:
                 # reddit.redditor("***REMOVED***").message(senderName + " n'a pas assez de karma - contrôler et poster", message_content)
+                message.reply("Votre karma n'est pas assez élevé, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
                 reddit.subreddit(selectedSub).message("Karma trop bas, message non posté (à contrôler et poster pour ce redditeur?) - " + senderName + " vient d'essayer de poster sur r/" + selectedSub + ":", message_content)
                 message.mark_read()
     # sleep one minute
