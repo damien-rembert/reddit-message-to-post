@@ -58,6 +58,7 @@ while True:
         body = ""
         title = ""
         message_content = ""
+        spacing = " - "
         title = message.subject
         body = message.body
         message_content = "titre: " + title + " - corps: " + body
