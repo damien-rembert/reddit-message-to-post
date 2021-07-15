@@ -48,7 +48,7 @@ while True:
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
         # get sender name
-        sender = message.author
+        sender = message.author.name
         # senderSaid = sender + " vient de poster sur r/***REMOVED***"
         # get redditor karma
         senderKarma = sender.link_karma
