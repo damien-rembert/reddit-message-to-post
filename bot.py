@@ -50,7 +50,6 @@ while True:
         # get sender name
         sender = message.author
         senderName = message.author.name
-        # senderSaid = sender + " vient de poster sur r/***REMOVED***"
         # get redditor karma
         senderKarma = sender.link_karma
         # set minimum karma needed
@@ -71,11 +70,6 @@ while True:
                 senderIsTrusted = True
         # print(senderIsTrusted)
         # sender does not have enough karma
-        if senderKarma < minKarma:
-            reddit.redditor("***REMOVED***").message(senderName + " n'a pas assez de karma - contrôler et poster", message_content)
-            # reddit.subreddit("test").message("TEST", "test PM from PRAW")
-            reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + senderName + " vient d'essayer de poster sur r/***REMOVED***", message_content)
-            message.mark_read()
         # if the message is not a comment but a reply
         if message.was_comment:
             message.mark_read()
@@ -123,11 +117,12 @@ while True:
                     message.mark_read()
                 # reddit.redditor(body).unblock()
                 # message.mark_read()
-            else:
+            elif senderKarma > minKarma:
                 try:
                     if " " in body:
                         # reddit.subreddit("***REMOVED***").submit(title, selftext=body)
                         # message_content = message_content + body
+                        message.reply("Ce bot n'accepte actuellement que les message dont le corps est un lien vers r/France. Merci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps le lien vers r/France")
                         reddit.subreddit("***REMOVED***").message( senderName + " vient de poster sur r/***REMOVED***", message_content)
                         reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)   
                         # reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
@@ -143,6 +138,11 @@ while True:
                     message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT POSTING", message_content)
                     message.mark_read()
+            elif senderKarma <= minKarma:
+                # reddit.redditor("***REMOVED***").message(senderName + " n'a pas assez de karma - contrôler et poster", message_content)
+                # reddit.subreddit("test").message("TEST", "test PM from PRAW")
+                reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + senderName + " vient d'essayer de poster sur r/***REMOVED***", message_content)
+                message.mark_read()
                 # reddit.subreddit("***REMOVED***").submit(title, url=body)
                 # message_content = message_content + body
                 # message.reply(message_content)                
