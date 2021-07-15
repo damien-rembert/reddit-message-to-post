@@ -41,7 +41,7 @@ while True:
     username1 = os.environ['NOM']
     user_agent1 = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
 
-reddit = praw.Reddit(
+    reddit = praw.Reddit(
     client_id=client_id1,
     client_secret=client_secret1,
     password=password1,
