@@ -31,25 +31,24 @@ while True:
     # username="***REMOVED***"
     # )
 
-    client_id = ""
-    client_secret = ""
-    password = ""
-    username = ""
-    client_id = os.environ['IDCLIENT']
-    client_secret = os.environ['SECRETCLIENT']
-    password = os.environ['MDP']
-    username = os.environ['NOM']
-    user_agent = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
+    client_id1 = ""
+    client_secret1 = ""
+    password1 = ""
+    username1 = ""
+    client_id1 = os.environ['IDCLIENT']
+    client_secret1 = os.environ['SECRETCLIENT']
+    password1 = os.environ['MDP']
+    username1 = os.environ['NOM']
+    user_agent1 = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
 
-    reddit = praw.Reddit(client_id,client_secret,password,user_agent,username)
+reddit = praw.Reddit(
+    client_id=client_id1,
+    client_secret=client_secret1,
+    password=password1,
+    user_agent=user_agent1,
+    username=username1,
+)
 
-    # reddit = praw.Reddit(
-    # client_id,
-    # client_secret,
-    # user_agent,
-    # username,
-    # password,
-    # )
 
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
