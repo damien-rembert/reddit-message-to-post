@@ -7,16 +7,17 @@ import re
 
 # TODO set karma
 # TODO replace ***REMOVED*** with ***REMOVED***
-# TODO automatically mark mods from ***REMOVED*** as isMod and obey them 
-# TODO login without connection details in source code
+# TODO improve fault reporting returning error to ***REMOVED***
+
+# TODO np.reddit.com instead of www.reddit.com
 # TODO check that the url is on r/france
+
 # TODO define methods using def
+# TODO login without connection details in source code
 # TODO define method report fault to ***REMOVED***
 # TODO define method report things to mods
 # TODO define method redditor.HasEnoughKarma(amountOfKarmaNeeded)
 # TODO define method redditor.IsTrusted() returning bool
-# TODO improve fault reporting returning error to ***REMOVED***
-# TODO np.reddit.com instead of www.reddit.com
 # TODO reply to messages confirming that this should appear on the sub shortly
 
 
@@ -51,6 +52,10 @@ while True:
 
         # set minimum karma needed
         minKarma = 50
+        # set sub
+        selectedSub = "***REMOVED***"
+        # selectedSub = "***REMOVED***"
+
         # defaulting values
         body = ""
         title = ""
@@ -60,25 +65,28 @@ while True:
         senderIsMod = False
         senderKarma = 0
         senderName = ""
+
         # get sender name
         sender = message.author
         senderName = message.author.name
+
         # get redditor karma
         senderKarma = sender.link_karma
         title = message.subject
         body = message.body
         message_content = "TITRE: " + title + " - CORPS: " + body
         trusted_users = reddit.user.trusted()
+        
+        # is redditor trusted and/or mod
         for user in trusted_users:
-            # print(f"User: {user.name}")
             if senderName == user.name:
                 senderIsTrusted = True
                 break
-        for moderator in reddit.subreddit("***REMOVED***").moderator():
-           # print(f"{moderator}: {moderator.mod_permissions}")
+        for moderator in reddit.subreddit(selectedSub).moderator():
             if senderName == moderator.name:
                 senderIsMod = True
                 break
+        
         # ignore comments
         if message.was_comment:
             message.mark_read()
@@ -87,6 +95,7 @@ while True:
             if title == "Trust" and senderIsMod:
                 try:
                     reddit.redditor(body).trust()
+                    # reddit.subreddit(selectedSub).message( senderName + " vient de poster sur r/" + selectedSub, message_content)
                     message.mark_read()
                 except:
                     message_content = title + spacing + body
@@ -127,19 +136,15 @@ while True:
             elif senderKarma > minKarma:
                 try:
                     if "np.reddit.com/r/***REMOVED***" in body:
-                    # elif "np.reddit.com/r/france" in body:
-                        reddit.subreddit("***REMOVED***").submit(title, url=body)
-                        reddit.subreddit("***REMOVED***").message(senderName + " vient de poster sur r/***REMOVED***: ", message_content)
+                    # if "np.reddit.com/r/france" in body:
+                        reddit.subreddit(selectedSub).submit(title, url=body)
+                        reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
                         message.mark_read()
                     else:
                     # elif " " in body:
-                        # reddit.subreddit("***REMOVED***").submit(title, selftext=body)
-                        # message_content = message_content + body
-                        message.reply("Ce bot n'accepte actuellement que les message dont le corps est un lien vers r/France. Merci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps le lien vers r/France")
-                        reddit.subreddit("***REMOVED***").message( senderName + " vient de poster sur r/***REMOVED***", message_content)
-                        reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)   
-                        # reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
-                        # message.reply("il y a eu un problème, u/***REMOVED*** a été informé")       
+                        # reddit.subreddit(selectedSub).submit(title, selftext=body)
+                        message.reply("Ce bot n'accepte actuellement que les message dont le corps est un lien vers r/France. Merci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
+                        reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
                         message.mark_read()
                     # elif "reddit" in body
                     # elif "/r/france" in body
@@ -149,13 +154,13 @@ while True:
                     message.mark_read()
             elif senderKarma <= minKarma:
                 # reddit.redditor("***REMOVED***").message(senderName + " n'a pas assez de karma - contrôler et poster", message_content)
-                # reddit.subreddit("test").message("TEST", "test PM from PRAW")
-                reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté (à contrôler et poster pour ce redditeur?) - " + senderName + " vient d'essayer de poster sur r/***REMOVED***: ", message_content)
+                reddit.subreddit(selectedSub).message("Karma trop bas, message non posté (à contrôler et poster pour ce redditeur?) - " + senderName + " vient d'essayer de poster sur r/" + selectedSub + ":", message_content)
                 message.mark_read()
-                # reddit.subreddit("***REMOVED***").submit(title, url=body)
-                # message_content = message_content + body
-                # message.reply(message_content)                
-                # message.mark_read()
     # sleep one minute
     time.sleep(30)
-    # time.sleep(900)
+
+                        # message.reply("Ce bot n'accepte actuellement que les message dont le corps est un lien vers r/France. Merci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps le lien vers r/France")
+                        # reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
+                        # reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)
+                        # reddit.subreddit(selectedSub).submit(title, url=body)
+
