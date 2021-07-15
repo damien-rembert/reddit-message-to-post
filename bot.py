@@ -2,16 +2,21 @@
 import praw
 import time
 import os
+import re
 
 
-# TODO mark mods from ***REMOVED*** as Trusted
+# TODO automatically mark mods from ***REMOVED*** as Trusted
+# TODO replace ***REMOVED*** with ***REMOVED***
+# TODO set karma
 # TODO login without connection details in source code
 # TODO check that the url is on r/france
 # TODO define methods using def
-# TODO define report fault to ***REMOVED***
-# TODO define redditor.HasEnoughKarma(amountOfKarmaNeeded)
-# TODO define redditor.IsTrusted() returning bool
+# TODO define method report fault to ***REMOVED***
+# TODO define method redditor.HasEnoughKarma(amountOfKarmaNeeded)
+# TODO define method redditor.IsTrusted() returning bool
 # TODO improve fault reporting returning error to ***REMOVED***
+# TODO np.reddit.com instead of www.reddit.com
+# TODO reply to messages confirming that this should appear on the sub shortly
 
 
 while True:
@@ -44,16 +49,19 @@ while True:
     for message in reddit.inbox.unread(mark_read=False, limit=None):
         # get sender name
         sender = message.author
+        # senderSaid = sender + " vient de poster sur r/***REMOVED***"
         # get redditor karma
         senderKarma = sender.link_karma
         # set minimum karma needed
-        minKarma = 50
+        minKarma = 5000
         senderIsTrusted = False
         body = ""
         title = ""
         spacing = " - "
+        message_content = ""
         title = message.subject
         body = message.body
+        message_content = title + spacing + body
         # print(senderIsTrusted)
         trusted_users = reddit.user.trusted()
         for user in trusted_users:
@@ -63,8 +71,9 @@ while True:
         # print(senderIsTrusted)
         # sender does not have enough karma
         if senderKarma < minKarma:
-            message_content = title + spacing + body
             reddit.redditor("***REMOVED***").message("REDDITOR WITH KARMA TOO LOW - CHECK AND POST", message_content)
+
+            reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + sender + " vient d'essayer de poster sur r/***REMOVED***", message_content)
             message.mark_read()
         # if the message is not a comment reply
         if message.was_comment:
@@ -118,10 +127,14 @@ while True:
                     if " " in body:
                         reddit.subreddit("***REMOVED***").submit(title, selftext=body)
                         # message_content = message_content + body
-                        # reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)           
+                        reddit.subreddit("***REMOVED***").message( sender + " vient de poster sur r/***REMOVED***", message_content)
+                        reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)   
+                        # reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
+                        # message.reply("il y a eu un problème, u/***REMOVED*** a été informé")       
                         message.mark_read()
-                    else:
+                    elif "np.reddit":
                         reddit.subreddit("***REMOVED***").submit(title, url=body)
+                        reddit.subreddit("***REMOVED***").message(sender + " vient de poster sur r/***REMOVED***", message_content)
                         message.mark_read()
                 except:
                     message_content = title + spacing + body
@@ -132,5 +145,5 @@ while True:
                 # message.reply(message_content)                
                 # message.mark_read()
     # sleep one minute
-    time.sleep(60)
+    time.sleep(30)
     # time.sleep(900)
