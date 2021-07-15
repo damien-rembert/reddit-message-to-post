@@ -72,10 +72,10 @@ while True:
         # sender does not have enough karma
         if senderKarma < minKarma:
             reddit.redditor("***REMOVED***").message(sender + " n'a pas assez de karma - contrôler et poster", message_content)
-            reddit.subreddit("test").message("TEST", "test PM from PRAW")
+            # reddit.subreddit("test").message("TEST", "test PM from PRAW")
             reddit.subreddit("***REMOVED***").message("Karma trop bas, message non posté - " + sender + " vient d'essayer de poster sur r/***REMOVED***", message_content)
             message.mark_read()
-        # if the message is not a comment reply
+        # if the message is not a comment but a reply
         if message.was_comment:
             message.mark_read()
         else:
@@ -125,17 +125,19 @@ while True:
             else:
                 try:
                     if " " in body:
-                        reddit.subreddit("***REMOVED***").submit(title, selftext=body)
+                        # reddit.subreddit("***REMOVED***").submit(title, selftext=body)
                         # message_content = message_content + body
                         reddit.subreddit("***REMOVED***").message( sender + " vient de poster sur r/***REMOVED***", message_content)
                         reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)   
                         # reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
                         # message.reply("il y a eu un problème, u/***REMOVED*** a été informé")       
                         message.mark_read()
-                    elif "np.reddit":
+                    elif "np.reddit" in body:
                         reddit.subreddit("***REMOVED***").submit(title, url=body)
                         reddit.subreddit("***REMOVED***").message(sender + " vient de poster sur r/***REMOVED***", message_content)
                         message.mark_read()
+                    # elif "reddit" in body
+                    # elif "/r/france" in body
                 except:
                     message_content = title + spacing + body
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT POSTING", message_content)
