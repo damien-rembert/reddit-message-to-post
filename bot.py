@@ -92,7 +92,7 @@ while True:
                     trusted_users = reddit.user.trusted()
                     for user in trusted_users:
                         if body == user.name:
-                        targetIsTrusted = True
+                            targetIsTrusted = True
                         break
                     if targetIsTrusted:
                         message.reply(body + " est déjà sur la liste des redditeurs approuvés.")
@@ -112,7 +112,7 @@ while True:
                     trusted_users = reddit.user.trusted()
                     for user in trusted_users:
                         if body == user.name:
-                        targetIsTrusted = True
+                            targetIsTrusted = True
                         break
                     if targetIsTrusted:
                         reddit.redditor(body).distrust()
@@ -132,7 +132,7 @@ while True:
                     blocked_users = reddit.user.blocked()
                     for user in blocked_users:
                         if body == user.name:
-                        targetIsBlocked = True
+                            targetIsBlocked = True
                         break
                     if targetIsBlocked:
                         message.reply(body + " est déjà sur la liste des redditeurs bloqués.")
@@ -152,7 +152,7 @@ while True:
                     blocked_users = reddit.user.blocked()
                     for user in blocked_users:
                         if body == user.name:
-                        targetIsBlocked = True
+                            targetIsBlocked = True
                         break
                     if targetIsBlocked:
                         reddit.redditor(body).unblock()
