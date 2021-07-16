@@ -6,19 +6,17 @@ import re
 
 
 # TODO ask mods about minimum karma
-# TODO replace ***REMOVED*** with ***REMOVED***
-# TODO improve fault reporting
+# TODO ask mods if they want to be notified about list changes
+# TODO ask mods if they want the approved lists to skip modmail
+# TODO ask mods if they want other subreddits
 
-# TODO np.reddit.com instead of www.reddit.com
-# TODO check that the url is on r/france
+# TODO replace ***REMOVED*** with ***REMOVED***
 
 # TODO define methods using def
-# TODO login without connection details in source code
 # TODO define method report fault to ***REMOVED***
 # TODO define method report things to mods
 # TODO define method redditor.HasEnoughKarma(amountOfKarmaNeeded)
 # TODO define method redditor.IsTrusted() returning bool
-# TODO reply to messages confirming that this should appear on the sub shortly
 
 
 while True:
@@ -55,6 +53,7 @@ while True:
         senderIsMod = False
         senderKarma = 0
         senderName = ""
+        helpSuggestion = "Pour plus de détails sur les fonctions de ce bot, envoyez-lui un message ayant pour objet Help."
 
         # get sender name
         sender = message.author
@@ -85,6 +84,10 @@ while True:
         if message.was_comment:
             message.mark_read()
         else:
+            # admin command 0 Help
+            if title == "Help" and senderIsMod:
+                message.reply("Bonjour, en tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot. Pour cela il suffit d'envoyer un message à ce bot avec pour objet: Help, pour recevoir ce message, qui définit les différentes options. Les principales options servent à la gestion des redditeur qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet et le nom du redditeur (sans /u/) dans le corps du message. Trust, pour ajouter quelqu'un à la liste des Redditors autorisés à poster sans signalement au modmail. Distrust pour retirer une personne de cette liste. Block, pour ajouter un redditeur à la liste de spam du bot et que ses messages soient refusés automatiquement. Unblock, pour retirer une personne de cette liste. Ce bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!")
+                message.mark_read()
             # admin command 1 Trust
             if title == "Trust" and senderIsMod:
                 try:
@@ -99,10 +102,10 @@ while True:
                     else:
                         reddit.redditor(body).trust()
                         message.reply(body + " est maintenant sur la liste des redditeurs approuvés.")
-                    # reddit.subreddit(selectedSub).message( senderName + " vient de poster sur r/" + selectedSub, message_content)
+                        # reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés", helpSuggestion)
                     message.mark_read()
                 except:
-                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT TRUSTING", message_content)
+                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
                     message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
                     message.mark_read()
             # admin command 2 Distrust
@@ -119,7 +122,6 @@ while True:
                         message.reply(body + " n'est plus sur la liste des redditeurs approuvés.")
                     else:
                         message.reply(body + " n'était pas sur la liste des redditeurs approuvés.")
-                    # reddit.subreddit(selectedSub).message( senderName + " vient de poster sur r/" + selectedSub, message_content)
                     message.mark_read()
                 except:
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
@@ -139,7 +141,6 @@ while True:
                     else:
                         reddit.redditor(body).block()
                         message.reply(body + " est maintenant sur la liste des redditeurs bloqués.")
-                    # reddit.subreddit(selectedSub).message( senderName + " vient de poster sur r/" + selectedSub, message_content)
                     message.mark_read()
                 except:
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT BLOCKING", message_content)
@@ -159,7 +160,6 @@ while True:
                         message.reply(body + " n'est plus sur la liste des redditeurs bloqués.")
                     else:
                         message.reply(body + " n'était pas sur la liste des redditeurs bloqués.")
-                    # reddit.subreddit(selectedSub).message( senderName + " vient de poster sur r/" + selectedSub, message_content)
                     message.mark_read()
                 except:
                     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT UNBLOCKING", message_content)
