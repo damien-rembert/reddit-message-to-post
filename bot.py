@@ -70,7 +70,8 @@ def adminTrust(sender,title,body):
 def listToString(list):
     x = ""
     for element in list:
-        x = x + ", " + element
+        redditorName = element.name
+        x = x + ", " + redditorName
     return x
 
 def refreshList():
