@@ -74,13 +74,14 @@ def listToString(list):
         x = x + ", " + redditorName
     return x
 
-def refreshList():
+def refreshList(listName):
     global modList
     global trustedList
     global blockedList
-    modList = reddit.subreddit(selectedSub).moderator()
-    trustedList = reddit.user.trusted()
-    blockedList = reddit.user.blocked()
+    if listName == "trusted":
+        trustedList = reddit.user.trusted()
+    elif listName == "blocked":
+        blockedList = reddit.user.blocked()
 
 
 
@@ -184,7 +185,6 @@ while True:
                 break
             # admin command 1 Trust
             if title == "Trust":
-                refreshList()
                 reddit.redditor("***REMOVED***").message("title is Trust", message_content)
                 if isTrusted(body):
                     reddit.redditor("***REMOVED***").message("title is Trust but target is already trusted", message_content)
@@ -195,7 +195,7 @@ while True:
                     try:
                         reddit.redditor("***REMOVED***").message("target is not trusted begin try", message_content)
                         reddit.redditor(body).trust()
-                        refreshList()
+                        refreshList("trusted")
                         reddit.redditor("***REMOVED***").message("target should now be trusted", message_content)
                         message.reply(body + " est maintenant sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                         reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
@@ -222,7 +222,6 @@ while True:
 
             # admin command 2 Distrust trial
             if title == "Distrust":
-                refreshList()
                 reddit.redditor("***REMOVED***").message("title is Distrust", message_content)
                 if not isTrusted(body):
                     reddit.redditor("***REMOVED***").message("title is Distrust but target is not trusted", message_content)
@@ -233,7 +232,7 @@ while True:
                     try:
                         reddit.redditor("***REMOVED***").message("target is trusted begin try", message_content)
                         reddit.redditor(body).distrust()
-                        refreshList()
+                        refreshList("trusted")
                         reddit.redditor("***REMOVED***").message("target should not be trusted anymore", message_content)
                         message.reply(body + " est maintenant retiré de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                         reddit.subreddit(selectedSub).message(senderName + " vient de retirer " + body + " de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
@@ -247,7 +246,6 @@ while True:
             elif title == "Block" and senderIsMod:
                 try:
                     # is target already blocked
-                    refreshList()
                     for user in blockedList:
                         if body == user.name:
                             targetIsBlocked = True
@@ -266,7 +264,6 @@ while True:
             elif title == "Unblock" and senderIsMod:
                 try:
                     # is target blocked
-                    refreshList()
                     for user in blockedList:
                         if body == user.name:
                             targetIsBlocked = True
