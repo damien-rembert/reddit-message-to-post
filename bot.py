@@ -17,6 +17,84 @@ import re
 # TODO define method report things to mods
 # TODO define method redditor.HasEnoughKarma(amountOfKarmaNeeded)
 # TODO define method redditor.IsTrusted() returning bool
+# TODO add reply to failed admin that prints the lists
+# TODO add helpsuggestion as a footer to all mail to mods
+
+def isAdminWord(messageTitle):
+    global adminWordList
+    titleIsAdminWord = False
+    for adminWord in adminWordList:
+        if adminWord == messageTitle:
+           titleIsAdminWord = True
+           break
+    return titleIsAdminWord
+
+def isMod(redditorName):
+    global modList
+    senderIsMod = False
+    for moderator in modList:
+        if redditorName == moderator.name:
+           senderIsMod = True
+           break
+    return senderIsMod
+
+def isTrusted(redditorName):
+    global trustedList
+    redditorIsTrusted = False
+    for user in trustedList:
+        if redditorName == user.name:
+           redditorIsTrusted = True
+           break
+    return redditorIsTrusted
+
+def isBlocked(redditorName):
+    global blockedList
+    redditorIsBlocked = False
+    for user in blockedList:
+        if redditorName == user.name:
+           redditorIsBlocked = True
+           break
+    return redditorIsBlocked
+
+def cleanUrl(dirtyUrl):
+    # regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/france/.+$)", dirtyUrl)
+    regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/***REMOVED***/.+$)", dirtyUrl)
+    baseUrl = regexClean.group("url")
+    fullUrl = "https://np.reddit.com/" + baseUrl
+    return fullUrl
+
+
+
+
+# set minimum karma needed
+minKarma = 50
+# set sub
+selectedSub = "***REMOVED***"
+# selectedSub = "***REMOVED***"
+helpWord = "Help"
+blockWord = "Block"
+unblockWord = "Unblock"
+trustWord = "Trust"
+distrustWord = "Distrust"
+adminWordList = [helpWord, blockWord, unblockWord, trustWord, distrustWord]
+
+helpMessage = "Bonjour,\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n" + helpWord + ", pour recevoir ce message, qui définit les différentes options.\nLes autres options servent à la gestion des redditeur qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le nom du redditeur (sans /u/) dans le corps du message.\n" + trustWord + ", pour ajouter quelqu'un à la liste des Redditors autorisés à poster sans signalement au modmail.\n" + distrustWord + " pour retirer une personne de cette liste.\n" + blockWord + ", pour ajouter un redditeur à la liste de spam du bot et que ses messages soient refusés automatiquement.\n" + unblockWord + ", pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!"
+
+
+# put try/except at lowest level only
+# loop forever
+# if comment: mark as read
+# elif title is adminWord:
+#     if mod: do adminTask
+#     else: send warning to mods and ***REMOVED***
+# elif body contains r/france:
+#     if approved redditor: do post (with message to mods?)
+#     elif enough karma: do post with message to mods
+# else:
+#     if mod: "only accepting r/france links + format atm" + help suggestion
+#     else: send message "only accepting r/france links + format atm" and notify mods
+
+
 
 
 while True:
@@ -33,16 +111,15 @@ while True:
     password=password1,
     user_agent=user_agent1,
     username=username1,
-)
+    )
 
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
 
-        # set minimum karma needed
-        minKarma = 50
-        # set sub
-        selectedSub = "***REMOVED***"
-        # selectedSub = "***REMOVED***"
+        # get lists
+        modList = reddit.subreddit(selectedSub).moderator()
+        trustedList = reddit.user.trusted()
+        blockedList = reddit.user.blocked()
 
         # defaulting values
         body = ""
@@ -53,7 +130,7 @@ while True:
         senderIsMod = False
         senderKarma = 0
         senderName = ""
-        helpSuggestion = "Pour plus de détails sur les fonctions de ce bot, envoyez-lui un message ayant pour objet Help."
+        helpSuggestion = "\n\nPour plus de détails sur les fonctions de ce bot, envoyez-lui un message ayant pour objet " + helpWord + "."
 
         # get sender name
         sender = message.author
@@ -68,65 +145,83 @@ while True:
         message_content = "TITRE: " + title + " - CORPS: " + body
         
         # is redditor trusted
-        trusted_users = reddit.user.trusted()
-        for user in trusted_users:
-            if senderName == user.name:
-                senderIsTrusted = True
-                break
-
+        senderIsTrusted = isTrusted(senderName)
         # is redditor a mod
-        for moderator in reddit.subreddit(selectedSub).moderator():
-            if senderName == moderator.name:
-                senderIsMod = True
-                break
-        
+        senderIsMod = isMod(senderName)
+        adminMode = isMod(senderName) and isAdminWord(title)
+
         # ignore comments
         if message.was_comment:
             message.mark_read()
-        else:
+            break
+        elif adminMode:
             # admin command 0 Help
-            if title == "Help" and senderIsMod:
-                message.reply("Bonjour, en tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot. Pour cela il suffit d'envoyer un message à ce bot avec pour objet: Help, pour recevoir ce message, qui définit les différentes options. Les principales options servent à la gestion des redditeur qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet et le nom du redditeur (sans /u/) dans le corps du message. Trust, pour ajouter quelqu'un à la liste des Redditors autorisés à poster sans signalement au modmail. Distrust pour retirer une personne de cette liste. Block, pour ajouter un redditeur à la liste de spam du bot et que ses messages soient refusés automatiquement. Unblock, pour retirer une personne de cette liste. Ce bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!")
+            # adminTask(sender,title,body)
+            if title == "Help":
+                message.reply(helpMessage)
                 message.mark_read()
+                break
             # admin command 1 Trust
-            if title == "Trust" and senderIsMod:
-                try:
-                    # is target already trusted
-                    trusted_users = reddit.user.trusted()
-                    for user in trusted_users:
-                        if body == user.name:
-                            targetIsTrusted = True
-                        break
-                    if targetIsTrusted:
-                        message.reply(body + " est déjà sur la liste des redditeurs approuvés.")
-                    else:
+            if title == "Trust":
+                trustedList = reddit.user.trusted()
+                reddit.redditor("***REMOVED***").message("title is Trust", message_content)
+                if isTrusted(body):
+                    reddit.redditor("***REMOVED***").message("title is Trust but target is already trusted", message_content)
+                    message.reply(body + " est déjà sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                    message.mark_read()
+                    break
+                else:
+                    try:
+                        reddit.redditor("***REMOVED***").message("target is not trusted begin try", message_content)
                         reddit.redditor(body).trust()
-                        message.reply(body + " est maintenant sur la liste des redditeurs approuvés.")
-                        # reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés", helpSuggestion)
+                        trustedList = reddit.user.trusted()
+                        reddit.redditor("***REMOVED***").message("target should now be trusted", message_content)
+                        message.reply(body + " est maintenant sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                        reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                    except:
+                        reddit.redditor("***REMOVED***").message("target is not trusted begin except", message_content)
+                        message.reply("Trust n'a pas fonctionné" + body + " peut-être déjà sur la liste des redditeurs approuvés?\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
                     message.mark_read()
-                except:
-                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
-                    message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
-                    message.mark_read()
+                    break
+                # except:
+                #     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
+                #     message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
+                #     message.mark_read()
             # admin command 2 Distrust
-            elif title == "Distrust" and senderIsMod:
-                try:
-                    # is target already trusted
-                    trusted_users = reddit.user.trusted()
-                    for user in trusted_users:
-                        if body == user.name:
-                            targetIsTrusted = True
-                        break
-                    if targetIsTrusted:
+            # elif title == "Distrust":
+            #     trustedList = reddit.user.trusted()
+            #     if not isTrusted(body):
+            #         reddit.redditor(body).distrust()
+            #         message.reply(body + " n'est plus sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+            #         reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+            #         message.mark_read()
+            #     else:
+            #         message.reply(body + " n'était pas sur la liste des redditeurs approuvés.\nVoici la liste des 
+            #     message.mark_read()
+
+            # admin command 2 Distrust trial
+            if title == "Distrust":
+                trustedList = reddit.user.trusted()
+                reddit.redditor("***REMOVED***").message("title is Distrust", message_content)
+                if not isTrusted(body):
+                    reddit.redditor("***REMOVED***").message("title is Distrust but target is not trusted", message_content)
+                    message.reply(body + " n'est pas sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                    message.mark_read()
+                    break
+                else:
+                    try:
+                        reddit.redditor("***REMOVED***").message("target is trusted begin try", message_content)
                         reddit.redditor(body).distrust()
-                        message.reply(body + " n'est plus sur la liste des redditeurs approuvés.")
-                    else:
-                        message.reply(body + " n'était pas sur la liste des redditeurs approuvés.")
+                        trustedList = reddit.user.trusted()
+                        reddit.redditor("***REMOVED***").message("target should not be trusted anymore", message_content)
+                        message.reply(body + " est maintenant retiré de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                        reddit.subreddit(selectedSub).message(senderName + " vient de retirer " + body + " de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                    except:
+                        reddit.redditor("***REMOVED***").message("target is trusted begin except", message_content)
+                        message.reply("Distrust n'a pas fonctionné" + body + " n'est peut-être pas sur la liste des redditeurs approuvés?\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
                     message.mark_read()
-                except:
-                    reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
-                    message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
-                    message.mark_read()
+                    break
+
             # admin command 3 Block
             elif title == "Block" and senderIsMod:
                 try:
@@ -175,11 +270,7 @@ while True:
                         message.mark_read()
                     elif "r/***REMOVED***/" in body:
                     # elif "r/france/" in body:
-                        # regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/france/.+$)", body)
-                        regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/***REMOVED***/.+$)", body)
-                        baseUrl = regexClean.group("url")
-                        fullUrl = "https://np.reddit.com/" + baseUrl
-                        reddit.subreddit(selectedSub).submit(title, url=fullUrl)
+                        reddit.subreddit(selectedSub).submit(title, url=cleanUrl(body))
                         reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
                         message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
                         message.mark_read()
@@ -202,8 +293,4 @@ while True:
     # sleep one minute
     time.sleep(30)
 
-                        # message.reply("Ce bot n'accepte actuellement que les message dont le corps est un lien vers r/France. Merci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps le lien vers r/France")
-                        # reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
-                        # reddit.redditor("***REMOVED***").message("posting to ***REMOVED***", message_content)
-                        # reddit.subreddit(selectedSub).submit(title, url=body)
 
