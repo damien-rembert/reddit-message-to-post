@@ -75,7 +75,6 @@ while True:
                 senderIsTrusted = True
                 break
         for moderator in reddit.subreddit("***REMOVED***").moderator():
-           # print(f"{moderator}: {moderator.mod_permissions}")
             if senderName == moderator.name:
                 senderIsMod = True
                 break
@@ -87,6 +86,7 @@ while True:
             if title == "Trust" and senderIsMod:
                 try:
                     reddit.redditor(body).trust()
+                    reddit.subreddit("***REMOVED***").message(senderName + " vient de marquer ", message_content)
                     message.mark_read()
                 except:
                     message_content = title + spacing + body
