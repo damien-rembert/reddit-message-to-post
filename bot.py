@@ -309,22 +309,17 @@ while True:
 
                 # message.mark_read()
         elif senderKarma >= minKarma:
-            try:
-                if "r/***REMOVED***/" in body:
-                # if "r/france/" in body:
-                    cleanedUrl = cleanUrl(body)
-                    reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
-                    reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
-                    message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
-                    message.mark_read()
-                    break
-                else:
-                    message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
-                    reddit.subreddit(selectedSub).message(senderName + " vient d'essayer de poster sur r/" + selectedSub + " mais le message ne semblait pas contenir de lien:", message_content + helpSuggestion)
-                    message.mark_read()
-                    break
-            except:
-                reportToLamalediction(senderName, message_content)
+            if "r/***REMOVED***/" in body:
+            # if "r/france/" in body:
+                cleanedUrl = cleanUrl(body)
+                reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
+                reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
+                message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
+                message.mark_read()
+                break
+            else:
+                message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
+                reddit.subreddit(selectedSub).message(senderName + " vient d'essayer de poster sur r/" + selectedSub + " mais le message ne semblait pas contenir de lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
         elif senderKarma < minKarma:
