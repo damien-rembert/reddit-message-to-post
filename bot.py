@@ -74,14 +74,13 @@ def listToString(list):
         x = x + ", " + redditorName
     return x
 
-def refreshList(listName):
-    global modList
+def refreshListTrusted():
     global trustedList
+    trustedList = reddit.user.trusted()
+
+def refreshListBlocked():
     global blockedList
-    if listName == "trusted":
-        trustedList = reddit.user.trusted()
-    elif listName == "blocked":
-        blockedList = reddit.user.blocked()
+    blockedList = reddit.user.blocked()
 
 
 
@@ -195,7 +194,7 @@ while True:
                     try:
                         reddit.redditor("***REMOVED***").message("target is not trusted begin try", message_content)
                         reddit.redditor(body).trust()
-                        refreshList("trusted")
+                        refreshListTrusted()
                         reddit.redditor("***REMOVED***").message("target should now be trusted", message_content)
                         message.reply(body + " est maintenant sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                         reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
@@ -232,7 +231,7 @@ while True:
                     try:
                         reddit.redditor("***REMOVED***").message("target is trusted begin try", message_content)
                         reddit.redditor(body).distrust()
-                        refreshList("trusted")
+                        refreshListTrusted()
                         reddit.redditor("***REMOVED***").message("target should not be trusted anymore", message_content)
                         message.reply(body + " est maintenant retiré de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                         reddit.subreddit(selectedSub).message(senderName + " vient de retirer " + body + " de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
