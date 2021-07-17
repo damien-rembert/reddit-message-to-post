@@ -175,7 +175,7 @@ while True:
         # ignore comments
         # reddit.subreddit(selectedSub).message("essai modmail")
         # reddit.subreddit(selectedSub).message("essai pied" +  helpSuggestion)
-        reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
+        # reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
 
         if message.was_comment:
             message.mark_read()
