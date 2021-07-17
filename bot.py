@@ -173,8 +173,8 @@ while True:
         adminMode = isMod(senderName) and isAdminWord(title)
 
         # ignore comments
-        reddit.subreddit(selectedSub).message("essai modmail")
-        reddit.subreddit(selectedSub).message("essai pied" +  helpSuggestion)
+        # reddit.subreddit(selectedSub).message("essai modmail")
+        # reddit.subreddit(selectedSub).message("essai pied" +  helpSuggestion)
         if message.was_comment:
             message.mark_read()
             break
