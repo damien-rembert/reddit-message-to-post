@@ -16,6 +16,7 @@ import re
 
 # TODO define methods using def
 # TODO define method report things to mods
+# TODO check length of strings from senders
 
 
 def isAdminWord(messageTitle):
@@ -319,12 +320,12 @@ while True:
                 break
             else:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
-                reddit.subreddit(selectedSub).message(senderName + " vient d'essayer de poster sur r/" + selectedSub + " mais le message ne semblait pas contenir de lien vers r/France:", message_content + helpSuggestion)
+                reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
         elif senderKarma < minKarma:
             message.reply("Votre karma n'est pas assez élevé, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
-            reddit.subreddit(selectedSub).message("Karma de " + senderName + " trop bas, message non posté (à contrôler et poster pour ce redditeur?) - " + senderName + " vient d'essayer de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
+            reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message mais son karma est trop bas" , "Post à contrôler et à renvoyer pour le redditeur en question?) - " message_content + helpSuggestion)
             message.mark_read()
 
     # sleep one minute
