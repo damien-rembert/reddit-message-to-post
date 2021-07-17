@@ -100,7 +100,6 @@ trustWord = "Trust"
 distrustWord = "Distrust"
 adminWordList = [helpWord, blockWord, unblockWord, trustWord, distrustWord]
 
-helpMessage = "Bonjour,\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n" + helpWord + ", pour recevoir ce message, qui définit les différentes options.\nLes autres options servent à la gestion des redditeur qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le nom du redditeur (sans /u/) dans le corps du message.\n" + trustWord + ", pour ajouter quelqu'un à la liste des Redditors autorisés à poster sans signalement au modmail.\n" + distrustWord + " pour retirer une personne de cette liste.\n" + blockWord + ", pour ajouter un redditeur à la liste de spam du bot et que ses messages soient refusés automatiquement.\n" + unblockWord + ", pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\n"
 
 
 # put try/except at lowest level only
@@ -152,7 +151,9 @@ while True:
         senderIsMod = False
         senderKarma = 0
         senderName = ""
-        helpSuggestion = "\n\nPour plus de détails sur les fonctions de ce bot, envoyez-lui un message ayant pour objet " + helpWord + "."
+        helpSuggestion = "\n\nPour plus de détails sur les fonctions de ce bot ou pour afficher les listes de redditeurs approuvés et bloqués, envoyez-lui un message ayant pour objet " + helpWord + "."
+        helpMessage = "Bonjour,\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n" + helpWord + ", pour recevoir ce message, qui définit les différentes options.\nLes autres options servent à la gestion des redditeur qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le nom du redditeur (sans /u/) dans le corps du message.\n" + trustWord + ", pour ajouter quelqu'un à la liste des Redditors autorisés à poster sans signalement au modmail.\n" + distrustWord + " pour retirer une personne de cette liste.\n" + blockWord + ", pour ajouter un redditeur à la liste de spam du bot et que ses messages soient refusés automatiquement.\n" + unblockWord + ", pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  " \n\n\nVoici la liste des redditeurs bloqués:\n" + listToString(blockedList) +  helpSuggestion  
+
 
         # get sender name
         sender = message.author
