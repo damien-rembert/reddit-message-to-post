@@ -173,6 +173,8 @@ while True:
         adminMode = isMod(senderName) and isAdminWord(title)
 
         # ignore comments
+        reddit.subreddit(selectedSub).message("essai modmail")
+        reddit.subreddit(selectedSub).message("essai pied" +  helpSuggestion)
         if message.was_comment:
             message.mark_read()
             break
@@ -185,18 +187,14 @@ while True:
                 break
             # admin command 1 Trust
             if title == "Trust":
-                reddit.redditor("***REMOVED***").message("title is Trust", message_content)
                 if isTrusted(body):
-                    reddit.redditor("***REMOVED***").message("title is Trust but target is already trusted", message_content)
                     message.reply(body + " est déjà sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                     message.mark_read()
                     break
                 else:
                     try:
-                        reddit.redditor("***REMOVED***").message("target is not trusted begin try", message_content)
                         reddit.redditor(body).trust()
                         refreshList("trusted")
-                        reddit.redditor("***REMOVED***").message("target should now be trusted", message_content)
                         message.reply(body + " est maintenant sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                         reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
                     except:
