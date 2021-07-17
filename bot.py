@@ -175,6 +175,8 @@ while True:
         # ignore comments
         # reddit.subreddit(selectedSub).message("essai modmail")
         # reddit.subreddit(selectedSub).message("essai pied" +  helpSuggestion)
+        reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
+
         if message.was_comment:
             message.mark_read()
             break
@@ -197,49 +199,32 @@ while True:
                         refreshList("trusted")
                         message.reply(body + " est maintenant sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                         reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                        message.mark_read()
+                        break
                     except:
-                        reddit.redditor("***REMOVED***").message("target is not trusted begin except", message_content)
-                        message.reply("Trust n'a pas fonctionné" + body + " peut-être déjà sur la liste des redditeurs approuvés?\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
-                    message.mark_read()
-                    break
-                # except:
-                #     reddit.redditor("***REMOVED***").message("ISSUE WITH BOT DISTRUSTING", message_content)
-                #     message.reply("il y a eu un problème, u/***REMOVED*** a été informé")
-                #     message.mark_read()
-            # admin command 2 Distrust
-            # elif title == "Distrust":
-            #     trustedList = reddit.user.trusted()
-            #     if not isTrusted(body):
-            #         reddit.redditor(body).distrust()
-            #         message.reply(body + " n'est plus sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
-            #         reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
-            #         message.mark_read()
-            #     else:
-            #         message.reply(body + " n'était pas sur la liste des redditeurs approuvés.\nVoici la liste des 
-            #     message.mark_read()
+                        message.reply("Trust n'a pas fonctionné. " + body + " est peut-être déjà sur la liste des redditeurs approuvés?\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
+                        message.mark_read()
+                        break
 
             # admin command 2 Distrust trial
             if title == "Distrust":
-                reddit.redditor("***REMOVED***").message("title is Distrust", message_content)
                 if not isTrusted(body):
-                    reddit.redditor("***REMOVED***").message("title is Distrust but target is not trusted", message_content)
                     message.reply(body + " n'est pas sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
                     message.mark_read()
                     break
                 else:
                     try:
-                        reddit.redditor("***REMOVED***").message("target is trusted begin try", message_content)
                         reddit.redditor(body).distrust()
                         refreshList("trusted")
-                        reddit.redditor("***REMOVED***").message("target should not be trusted anymore", message_content)
-                        message.reply(body + " est maintenant retiré de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
-                        reddit.subreddit(selectedSub).message(senderName + " vient de retirer " + body + " de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                        message.reply(body + " est maintenant supprimé de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
+                        reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                        message.mark_read()
+                        break
                     except:
-                        reddit.redditor("***REMOVED***").message("target is trusted begin except", message_content)
-                        message.reply("Distrust n'a pas fonctionné" + body + " n'est peut-être pas sur la liste des redditeurs approuvés?\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
-                    message.mark_read()
-                    break
-
+                        message.reply("Trust n'a pas fonctionné. " + body + " est peut-être déjà sur la liste des redditeurs approuvés?\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
+                        message.mark_read()
+                        break
+                        
             # admin command 3 Block
             elif title == "Block" and senderIsMod:
                 try:
