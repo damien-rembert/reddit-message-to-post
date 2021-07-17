@@ -321,7 +321,6 @@ while True:
                 else:
                     message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
                     reddit.subreddit(selectedSub).message(senderName + " vient d'essayer de poster sur r/" + selectedSub + " mais le message ne semblait pas contenir de lien:", message_content + helpSuggestion)
-                    reddit.subreddit(selectedSub).message("Post refusé, le corps du message ne semble pas contenir de lien vers r/france. " + senderName + " vient d'essayer de poster anonymement sur r/" + selectedSub + ":", message_content + helpSuggestion)
                     message.mark_read()
                     break
             except:
