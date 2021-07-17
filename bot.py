@@ -76,9 +76,6 @@ def listToString(list):
             x = x + ", " + redditorName
     return x
 
-
-
-
 def refreshListTrusted():
     global trustedList
     trustedList = reddit.user.trusted()
@@ -147,23 +144,6 @@ unblockWord = "Unblock"
 trustWord = "Trust"
 distrustWord = "Distrust"
 adminWordList = [helpWord, blockWord, unblockWord, trustWord, distrustWord]
-
-
-
-# put try/except at lowest level only
-# loop forever
-# if comment: mark as read
-# elif title is adminWord:
-#     if mod: do adminTask
-#     else: send warning to mods and ***REMOVED***
-# elif body contains r/france:
-#     if approved redditor: do post (with message to mods?)
-#     elif enough karma: do post with message to mods
-# else:
-#     if mod: "only accepting r/france links + format atm" + help suggestion
-#     else: send message "only accepting r/france links + format atm" and notify mods
-
-
 
 
 while True:
