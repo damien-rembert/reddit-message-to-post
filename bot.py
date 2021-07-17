@@ -81,10 +81,12 @@ def listToString(list):
 def refreshListTrusted():
     global trustedList
     trustedList = reddit.user.trusted()
+    time.sleep(2)
 
 def refreshListBlocked():
     global blockedList
     blockedList = reddit.user.blocked()
+    time.sleep(2)
 
 def reportToLamalediction(senderName,content):
     reddit.redditor("***REMOVED***").message(senderName + " a envoyé un message qui a rencontré une erreur", content)
