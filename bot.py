@@ -197,7 +197,7 @@ while True:
         senderKarma = 0
         senderName = ""
         helpSuggestion = "\n\n\nPour plus de détails sur les fonctions de ce bot ou pour afficher les listes de redditeurs approuvés et bloqués, envoyez-lui un message ayant pour objet **" + helpWord + "**."
-        helpMessage = "Bonjour,\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\nLes autres options servent à la gestion des redditeur qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le nom du redditeur (sans /u/) dans le corps du message.\n\n**" + trustWord + "**, pour ajouter quelqu'un à la liste des Redditors autorisés à poster sans signalement au modmail.\n\n**" + distrustWord + "**, pour retirer une personne de cette liste.\n\n**" + blockWord + "**, pour ajouter un redditeur à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des redditeurs approuvés:\n\n" + listToString(trustedList) +  " \n\n\nVoici la liste des redditeurs bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
+        helpMessage = "Bonjour,\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\nLes autres options servent à la gestion des redditeur qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le nom du redditeur (sans /u/) dans le corps du message.\n\n**" + trustWord + "**, pour ajouter quelqu'un à la liste des redditeurs autorisés à poster sans signalement au modmail.\n\n**" + distrustWord + "**, pour retirer une personne de cette liste.\n\n**" + blockWord + "**, pour ajouter un redditeur à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des redditeurs approuvés:\n\n" + listToString(trustedList) +  " \n\n\nVoici la liste des redditeurs bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
 
 
         # get sender name
@@ -231,17 +231,16 @@ while True:
                 break
             # admin command 1 Trust
             elif title == trustWord:
-                listo = trustedList
                 if isTrusted(body):
-                    replyAlready(title, body, listo)
+                    replyAlready(title, body, trustedList)
                     message.mark_read()
                     break
                 else:
                     try:
                         reddit.redditor(body).trust()
                         refreshListTrusted()
-                        replySuccess(title, body, listo)
-                        messageModsSuccess(title, senderName, body, listo)
+                        replySuccess(title, body, trustedList)
+                        messageModsSuccess(title, senderName, body, trustedList)
                         message.mark_read()
                         break
                     except:
@@ -251,17 +250,16 @@ while True:
 
             # admin command 2 Distrust
             elif title == distrustWord:
-                listo = trustedList
                 if not isTrusted(body):
-                    replyAlready(title, body, listo)
+                    replyAlready(title, body, trustedList)
                     message.mark_read()
                     break
                 else:
                     try:
                         reddit.redditor(body).distrust()
                         refreshListTrusted()
-                        replySuccess(title, body, listo)
-                        messageModsSuccess(title, senderName, body, listo)
+                        replySuccess(title, body, trustedList)
+                        messageModsSuccess(title, senderName, body, trustedList)
                         message.mark_read()
                         break
                     except:
@@ -271,17 +269,16 @@ while True:
                         
             # admin command 3 Block
             elif title == blockWord:
-                listo =  blockedList
                 if isBlocked(body):
-                    replyAlready(title, body, listo)
+                    replyAlready(title, body, blockedList)
                     message.mark_read()
                     break
                 else:
                     try:
                         reddit.redditor(body).block()
                         refreshListBlocked()
-                        replySuccess(title, body, listo)
-                        messageModsSuccess(title, senderName, body, listo)
+                        replySuccess(title, body, blockedList)
+                        messageModsSuccess(title, senderName, body, blockedList)
                         message.mark_read()
                         break
                     except:
@@ -291,17 +288,16 @@ while True:
 
             # admin command 4 unblock
             elif title == unblockWord:
-                listo =  blockedList
                 if not isBlocked(body):
-                    replyAlready(title, body, listo)
+                    replyAlready(title, body, blockedList)
                     message.mark_read()
                     break
                 else:
                     try:
                         reddit.redditor(body).unblock()
                         refreshListBlocked()
-                        replySuccess(title, body, listo)
-                        messageModsSuccess(title, senderName, body, listo)
+                        replySuccess(title, body, blockedList)
+                        messageModsSuccess(title, senderName, body, blockedList)
                         message.mark_read()
                         break
                     except:
