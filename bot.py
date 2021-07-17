@@ -291,12 +291,17 @@ while True:
                 break
             # if "r/***REMOVED***/" in body:
             if "r/france/" in body:
-                cleanedUrl = cleanUrl(body)
-                reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
-                reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
-                message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
-                message.mark_read()
-                break
+                try:
+                    cleanedUrl = cleanUrl(body)
+                    reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
+                    reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
+                    message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
+                    message.mark_read()
+                    break
+                except:
+                    reportToLamalediction(senderName, message_content)
+                    message.mark_read()
+                    break
             else:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
                 reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
