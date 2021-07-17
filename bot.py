@@ -173,10 +173,6 @@ while True:
         adminMode = isMod(senderName) and isAdminWord(title)
 
         # ignore comments
-        # reddit.subreddit(selectedSub).message("essai modmail")
-        # reddit.subreddit(selectedSub).message("essai pied" +  helpSuggestion)
-        # reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
-
         if message.was_comment:
             message.mark_read()
             break
@@ -198,7 +194,7 @@ while True:
                         reddit.redditor(body).trust()
                         refreshList("trusted")
                         message.reply(body + " est maintenant sur la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
-                        reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                        reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés." , "Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
                         message.mark_read()
                         break
                     except:
@@ -217,7 +213,7 @@ while True:
                         reddit.redditor(body).distrust()
                         refreshList("trusted")
                         message.reply(body + " est maintenant supprimé de la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + listToString(trustedList) +  helpSuggestion)
-                        reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés.\n Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
+                        reddit.subreddit(selectedSub).message(senderName + " vient d'ajouter " + body + " à la liste des redditeurs approuvés." , " Voici la liste des redditeurs approuvés:\n" + trustedList +  helpSuggestion)
                         message.mark_read()
                         break
                     except:
@@ -293,5 +289,7 @@ while True:
                 message.mark_read()
     # sleep one minute
     time.sleep(30)
-
+    reddit.subreddit(selectedSub).message("essai modmail", "avec un objet et un corps")
+    reddit.subreddit(selectedSub).message("essai pied" ,  helpSuggestion)
+    reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
 
