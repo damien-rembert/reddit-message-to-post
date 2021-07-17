@@ -288,10 +288,10 @@ while True:
                     break
                     # elif "reddit" in body
                     # elif "/r/france" in body
-                except:
-                    reddit.redditor("***REMOVED***").message(sender + " a envoyé un message qui a rencontré une erreur", message_content)
-                    message.mark_read()
-                    break
+            except:
+                reddit.redditor("***REMOVED***").message(sender + " a envoyé un message qui a rencontré une erreur", message_content)
+                message.mark_read()
+                break
         elif senderKarma < minKarma:
             # reddit.redditor("***REMOVED***").message(senderName + " n'a pas assez de karma - contrôler et poster", message_content)
             message.reply("Votre karma n'est pas assez élevé, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
