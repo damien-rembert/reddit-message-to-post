@@ -289,7 +289,7 @@ while True:
                 message.mark_read()
     # sleep one minute
     time.sleep(30)
-    reddit.subreddit(selectedSub).message("essai modmail", "avec un objet et un corps")
-    reddit.subreddit(selectedSub).message("essai pied" ,  helpSuggestion)
-    reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
+    # reddit.subreddit(selectedSub).message("essai modmail", "avec un objet et un corps")
+    # reddit.subreddit(selectedSub).message("essai pied" ,  helpSuggestion)
+    # reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content)
 
