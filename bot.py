@@ -221,7 +221,7 @@ while True:
         seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         if senderDob >= seventyTwoH:
             senderIsOldEnough = True
-            reddit.redditor("***REMOVED***").message("senderdob is over 72h", "ploup")
+            reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
 
         # min 72h old
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
@@ -230,7 +230,7 @@ while True:
         if senderDob >= tenYears:
             senderIsOlder = True
         else:
-            reddit.redditor("***REMOVED***").message("senderdob is under ten years", "ploup")
+            reddit.redditor("***REMOVED***").message("senderdob is under ten years", str(senderIsOlder))
 
         # is redditor trusted
         # senderIsTrusted = isTrusted(senderName)
