@@ -45,6 +45,10 @@ def isTrusted(redditorName):
            break
     return redditorIsTrusted
 
+
+
+
+
 def isBlocked(redditorName):
     global blockedList
     redditorIsBlocked = False
@@ -183,6 +187,7 @@ while True:
         message_content = ""
         spacing = " - "
         senderIsTrusted = False
+        senderIsOldEnough = False
         senderIsMod = False
         senderKarma = 0
         senderName = ""
@@ -207,28 +212,22 @@ while True:
 
 
 
-
-
-
+        # is redditor old enough
         # get sender age
+        senderDob = datetime.utcfromtimestamp(sender.created_utc)
+        # min 72h old
+        seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        if senderDob >= seventyTwoH:
+            senderIsOldEnough = True
+
         # now = datetime.datetime.now(datetime.timezone.utc)
-        senderDob = sender.created_utc
-        # senderAge = now - senderDob
-        minAge = 72 * 60 * 60
         # senderOldEnough = senderAge > minAge
         # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
-        if title == "myage":
+        if title == "myage" and senderIsOldEnough:
             # message.reply("DOB: " + senderDob + " now: " + now + " sender is old enough: ")
-            message.reply("DOB: " + str(senderDob))
+            message.reply("you are old enough")
             message.mark_read()
             break
-        
-
-
-
-
-
-
 
 
 
