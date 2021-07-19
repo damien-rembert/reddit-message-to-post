@@ -16,6 +16,7 @@ from datetime import timedelta
 # DONE envoyer en modmail que les threads créés
 # prévoir un thread de présentation
 # add /u/ to senderName
+# cleanEchoTitle
 # DONE retirer trusted
 
 def isAdminWord(messageTitle):
@@ -45,10 +46,6 @@ def isTrusted(redditorName):
            break
     return redditorIsTrusted
 
-
-
-
-
 def isBlocked(redditorName):
     global blockedList
     redditorIsBlocked = False
@@ -64,6 +61,12 @@ def cleanUrl(dirtyUrl):
     baseUrl = regexClean.group("url")
     fullUrl = "https://np.reddit.com/" + baseUrl
     return fullUrl
+
+
+def cleanEchoTitle(dirtyTitle):
+    regexClean = re.search(r"(?:Echo: )(?P<title>r/france/.+$)", dirtyUrl)
+    cleanTitle = regexClean.group("title")
+    return cleanTitle
 
 # def adminTrust(sender,title,body):
 #     global trustedList
@@ -90,7 +93,7 @@ def refreshListBlocked():
     time.sleep(1)
 
 def reportToLamalediction(senderName,content):
-    reddit.redditor("***REMOVED***").message(senderName + " a envoyé un message qui a rencontré une erreur", content)
+    reddit.redditor("***REMOVED***").message("/u/" + senderName + " a envoyé un message qui a rencontré une erreur", content)
 
 def replySuccess(operation, targetName, listo):
     if operation == trustWord:
@@ -192,15 +195,12 @@ while True:
         # senderKarma = 0
         senderName = ""
         helpSuggestion = "\n\n\n**********************\n\n\nPour plus de détails sur les fonctions de ce bot ou pour afficher les listes de pseudos approuvés et bloqués, envoyez-lui un message ayant pour objet **" + helpWord + "** (et n'importe quoi dans le corps du message)."
-        helpMessage = "Bonjour,\n\n\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\n\n\n\nLes autres options servent à la gestion des personnes qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le pseudo (sans /u/) dans le corps du message.\n\n**" + blockWord + "**, pour ajouter un pseudo à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des pseudos bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
+        helpMessage = "Bonjour,\n\n\nEn tant que mod de /r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\n\n\n\nLes autres options servent à la gestion des personnes qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le pseudo (sans /u/) dans le corps du message.\n\n**" + blockWord + "**, pour ajouter un pseudo à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des pseudos bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
 
 
         # get sender name
         sender = message.author
         senderName = message.author.name
-
-
-
 
         # get redditor karma
         # senderKarma = sender.link_karma
@@ -218,11 +218,19 @@ while True:
         senderDob = datetime.utcfromtimestamp(sender.created_utc)
         # min 72h old
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        seventyTwoH = datetime.utcnow() - timedelta(days=4000)
-        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         if senderDob >= seventyTwoH:
             senderIsOldEnough = True
+            reddit.redditor("***REMOVED***").message("senderdob is over 72h", "ploup")
 
+        # min 72h old
+        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        tenYears = datetime.utcnow() - timedelta(days=4000)
+        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        if senderDob >= tenYears:
+            senderIsOlder = True
+        else:
+            reddit.redditor("***REMOVED***").message("senderdob is under ten years", "ploup")
 
         # is redditor trusted
         # senderIsTrusted = isTrusted(senderName)
@@ -344,7 +352,7 @@ while True:
                 # message.mark_read()
         elif senderIsOldEnough:
             if " " in body:
-                message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
+                message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur /r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers /r/France")
                 # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
@@ -352,8 +360,8 @@ while True:
             if "r/france/" in body:
                 cleanedUrl = cleanUrl(body)
                 reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
-                reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
-                message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
+                reddit.subreddit(selectedSub).message("/u/" + senderName + " vient de poster sur /r/" + selectedSub + ":", message_content + helpSuggestion)
+                message.reply("Merci, votre message devrait apparaître sur /r/***REMOVED*** dans moins d'une minute!")
                 message.mark_read()
                 break
                 # try:
@@ -368,13 +376,13 @@ while True:
                 #     message.mark_read()
                 #     break
             else:
-                message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
+                message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur /r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers /r/France")
                 # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
         elif not senderIsOldEnough:
             message.reply("Votre compte est trop récent, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
-            reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
+            reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
             message.mark_read()
 
     # sleep one minute
