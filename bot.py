@@ -194,17 +194,6 @@ while True:
         sender = message.author
         senderName = message.author.name
 
-        # get sender age
-        senderDob = sender.created_utc
-        # senderAge = now - senderDob
-        minAge = 72 * 60 * 60
-        now = datetime.datetime.now(datetime.timezone.utc)
-        # senderOldEnough = 
-        # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
-        if title == "myage":
-            message.reply("DOB: " + senderDob + " now: " + now)
-            message.mark_read()
-            break
 
 
 
@@ -215,7 +204,33 @@ while True:
         title = message.subject
         body = message.body
         message_content = "TITRE: " + title + " - CORPS: " + body
+
+
+
+
+
+
+        # get sender age
+        senderDob = sender.created_utc
+        senderAge = now - senderDob
+        minAge = 72 * 60 * 60
+        now = datetime.datetime.now(datetime.timezone.utc)
+        senderOldEnough = senderAge > minAge
+        # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
+        if title == "myage":
+            message.reply("DOB: " + senderDob + " now: " + now + " sender is old enough: " senderOldEnough)
+            message.mark_read()
+            break
         
+
+
+
+
+
+
+
+
+
         # is redditor trusted
         senderIsTrusted = isTrusted(senderName)
         # is redditor a mod
