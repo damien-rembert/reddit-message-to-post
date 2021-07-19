@@ -219,7 +219,7 @@ while True:
         # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
         if title == "myage":
             # message.reply("DOB: " + senderDob + " now: " + now + " sender is old enough: ")
-            message.reply("DOB: " + senderDob)
+            message.reply("DOB: " + str(senderDob))
             message.mark_read()
             break
         
