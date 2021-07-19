@@ -11,11 +11,11 @@ from datetime import timedelta
 # TODO define methods using def
 # TODO define method report things to mods
 # TODO check length of strings from senders
-# supprimer le minimum de karma 
-# remplacer istrusted par le critère de 72h 
-# envoyer en modmail que les threads créés
+# DONE supprimer le minimum de karma 
+# DONE remplacer istrusted par le critère de 72h 
+# DONE envoyer en modmail que les threads créés
 # prévoir un thread de présentation
-# retirer trusted
+# DONE retirer trusted
 
 def isAdminWord(messageTitle):
     global adminWordList
@@ -136,7 +136,7 @@ def messageModsSuccess(operation, sender, targetName, listo):
 
 
 # set minimum karma needed
-minKarma = 50
+# minKarma = 50
 # set sub
 # selectedSub = "***REMOVED***"
 selectedSub = "***REMOVED***"
@@ -188,10 +188,10 @@ while True:
         senderIsTrusted = False
         senderIsOldEnough = False
         senderIsMod = False
-        senderKarma = 0
+        # senderKarma = 0
         senderName = ""
         helpSuggestion = "\n\n\n**********************\n\n\nPour plus de détails sur les fonctions de ce bot ou pour afficher les listes de pseudos approuvés et bloqués, envoyez-lui un message ayant pour objet **" + helpWord + "** (et n'importe quoi dans le corps du message)."
-        helpMessage = "Bonjour,\n\n\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\n\n\n\nLes autres options servent à la gestion des personnes qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le pseudo (sans /u/) dans le corps du message.\n\n**" + trustWord + "**, pour ajouter quelqu'un à la liste des pseudos autorisés à poster malgré un karma insuffisant.\n\n**" + distrustWord + "**, pour retirer une personne de cette liste.\n\n**" + blockWord + "**, pour ajouter un pseudo à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des pseudos approuvés:\n\n" + listToString(trustedList) +  " \n\n\nVoici la liste des pseudos bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
+        helpMessage = "Bonjour,\n\n\nEn tant que mod de r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\n\n\n\nLes autres options servent à la gestion des personnes qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le pseudo (sans /u/) dans le corps du message.\n\n**" + blockWord + "**, pour ajouter un pseudo à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des pseudos bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
 
 
         # get sender name
@@ -202,7 +202,7 @@ while True:
 
 
         # get redditor karma
-        senderKarma = sender.link_karma
+        # senderKarma = sender.link_karma
 
         # getting message content
         title = message.subject
@@ -221,32 +221,9 @@ while True:
         if senderDob >= seventyTwoH:
             senderIsOldEnough = True
 
-        # now = datetime.datetime.now(datetime.timezone.utc)
-        # senderOldEnough = senderAge > minAge
-        # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
-        if title == "myage" and senderIsOldEnough:
-            # message.reply("DOB: " + senderDob + " now: " + now + " sender is old enough: ")
-            message.reply("you are old enough")
-            message.mark_read()
-            break
-
-        # years
-        yearsOld = datetime.utcnow() - timedelta(days=3650)
-        if senderDob >= yearsOld:
-            senderIsOldEnoughYears = True
-        # now = datetime.datetime.now(datetime.timezone.utc)
-        # senderOldEnough = senderAge > minAge
-        # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
-        if title == "myageyears" and not senderIsOldEnoughYears:
-            # message.reply("DOB: " + senderDob + " now: " + now + " sender is old enough: ")
-            message.reply("you are not old enough")
-            message.mark_read()
-            break
-
-
 
         # is redditor trusted
-        senderIsTrusted = isTrusted(senderName)
+        # senderIsTrusted = isTrusted(senderName)
         # is redditor a mod
         senderIsMod = isMod(senderName)
         adminMode = isMod(senderName) and isAdminWord(title)
@@ -339,7 +316,7 @@ while True:
                         break
 
                 # message.mark_read()
-        elif senderKarma >= minKarma or senderIsTrusted:
+        elif senderIsOldEnough:
             if " " in body:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
                 # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
@@ -363,9 +340,9 @@ while True:
                 # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
-        elif senderKarma < minKarma:
-            message.reply("Votre karma n'est pas assez élevé, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
-            reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message mais son karma est trop bas" , "Post à contrôler et à renvoyer pour le pseudo en question?) - " + message_content + helpSuggestion)
+        elif not senderIsOldEnough:
+            message.reply("Votre compte est trop récent, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
+            reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
             message.mark_read()
 
     # sleep one minute
