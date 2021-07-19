@@ -217,7 +217,7 @@ while True:
         senderDob = datetime.utcfromtimestamp(sender.created_utc)
         # min 72h old
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        seventyTwoH = datetime.utcnow() - datetime.timedelta(hours=72)
+        seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         if senderDob >= seventyTwoH:
             senderIsOldEnough = True
 
@@ -231,7 +231,7 @@ while True:
             break
 
         # years
-        yearsOld = datetime.utcnow() - datetime.timedelta(years=10)
+        yearsOld = datetime.utcnow() - timedelta(years=10)
         if senderDob >= yearsOld:
             senderIsOldEnoughYears = True
         # now = datetime.datetime.now(datetime.timezone.utc)
