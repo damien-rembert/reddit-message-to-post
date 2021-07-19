@@ -212,9 +212,9 @@ while True:
 
 
 
-        # is redditor old enough
+        # is sender old enough
         # get sender age
-        senderDob = datetime.utcfromtimestamp(sender.created_utc)
+        senderDob = datetime.fromtimestamp(sender.created_utc)
         # min 72h old
         seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         if senderDob >= seventyTwoH:
@@ -230,8 +230,6 @@ while True:
             break
 
 
-        # is redditor old enough
-        # get sender age
         # min 72h old
         yearsOld = datetime.utcnow() - timedelta(years=10)
         if senderDob >= yearsOld:
