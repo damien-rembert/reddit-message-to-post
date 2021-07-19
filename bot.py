@@ -55,6 +55,33 @@ def isBlocked(redditorName):
            break
     return redditorIsBlocked
 
+def isOldEnough(redditor):
+    # is sender old enough
+    # get sender age
+    # senderDob = datetime.fromtimestamp(sender.created_utc)
+    senderDob = datetime.utcfromtimestamp(redditor.created_utc)
+    senderIsOldEnough = False
+        # min 72h old
+        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+    seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+    if senderDob >= seventyTwoH:
+        senderIsOldEnough = True
+        reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
+    else:
+        senderIsOldEnough = False
+        reddit.redditor("***REMOVED***").message("senderdob is not over 72h", str(senderIsOldEnough))
+    return senderIsOldEnough
+        #     tenYears = datetime.utcnow() - timedelta(days=4000)
+        # # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        # if senderDob >= tenYears:
+        #     senderIsOlder = True
+        # else:
+        #     reddit.redditor("***REMOVED***").message("senderdob is under ten years", str(senderIsOlder))
+
+
+
+
+
 def cleanUrl(dirtyUrl):
     regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/france/.+$)", dirtyUrl)
     # regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/***REMOVED***/.+$)", dirtyUrl)
@@ -215,22 +242,22 @@ while True:
         # is sender old enough
         # get sender age
         # senderDob = datetime.fromtimestamp(sender.created_utc)
-        senderDob = datetime.utcfromtimestamp(sender.created_utc)
+        # senderDob = datetime.utcfromtimestamp(sender.created_utc)
         # min 72h old
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        if senderDob >= seventyTwoH:
-            senderIsOldEnough = True
-            reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
+        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        # if senderDob >= seventyTwoH:
+        #     senderIsOldEnough = True
+        #     reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
 
         # min 72h old
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        tenYears = datetime.utcnow() - timedelta(days=4000)
-        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        if senderDob >= tenYears:
-            senderIsOlder = True
-        else:
-            reddit.redditor("***REMOVED***").message("senderdob is under ten years", str(senderIsOlder))
+        # tenYears = datetime.utcnow() - timedelta(days=4000)
+        # # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        # if senderDob >= tenYears:
+        #     senderIsOlder = True
+        # else:
+        #     reddit.redditor("***REMOVED***").message("senderdob is under ten years", str(senderIsOlder))
 
         # is redditor trusted
         # senderIsTrusted = isTrusted(senderName)
@@ -350,14 +377,14 @@ while True:
                     #     break
 
                 # message.mark_read()
-        elif senderIsOldEnough:
+        elif isOldEnough(sender):
             if " " in body:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur /r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers /r/France")
                 # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
             # if "r/***REMOVED***/" in body:
-            if "r/france/" in body:
+            elif "r/france/" in body:
                 cleanedUrl = cleanUrl(body)
                 reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
                 reddit.subreddit(selectedSub).message("/u/" + senderName + " vient de poster sur /r/" + selectedSub + ":", message_content + helpSuggestion)
@@ -380,13 +407,13 @@ while True:
                 # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
-        elif not senderIsOldEnough:
+        elif not isOldEnough(sender):
             message.reply("Votre compte est trop récent, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
             reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
             message.mark_read()
         else:
             message.reply("Votre message doit être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
-            reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
+            reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais il y a eu un problème" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
             reportToLamalediction(senderName, message_content)
             message.mark_read()
 
