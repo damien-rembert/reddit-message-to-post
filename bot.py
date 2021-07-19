@@ -231,7 +231,7 @@ while True:
             break
 
         # years
-        yearsOld = datetime.utcnow() - timedelta(years=10)
+        yearsOld = datetime.utcnow() - timedelta(days=3650)
         if senderDob >= yearsOld:
             senderIsOldEnoughYears = True
         # now = datetime.datetime.now(datetime.timezone.utc)
