@@ -4,6 +4,7 @@ import time
 import os
 import re
 from datetime import datetime
+from datetime import timedelta
 
 
 
@@ -230,7 +231,7 @@ while True:
             break
 
         # years
-        yearsOld = datetime.utcnow() - timedelta(years=10)
+        yearsOld = datetime.utcnow() - datetime.timedelta(years=10)
         if senderDob >= yearsOld:
             senderIsOldEnoughYears = True
         # now = datetime.datetime.now(datetime.timezone.utc)
