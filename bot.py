@@ -230,6 +230,23 @@ while True:
             break
 
 
+        # is redditor old enough
+        # get sender age
+        # min 72h old
+        yearsOld = datetime.utcnow() - timedelta(years=10)
+        if senderDob >= yearsOld:
+            senderIsOldEnoughYears = True
+
+        # now = datetime.datetime.now(datetime.timezone.utc)
+        # senderOldEnough = senderAge > minAge
+        # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
+        if title == "myageyears" and not senderIsOldEnoughYears:
+            # message.reply("DOB: " + senderDob + " now: " + now + " sender is old enough: ")
+            message.reply("you are not old enough")
+            message.mark_read()
+            break
+
+
 
         # is redditor trusted
         senderIsTrusted = isTrusted(senderName)
