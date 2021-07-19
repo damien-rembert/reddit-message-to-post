@@ -384,6 +384,11 @@ while True:
             message.reply("Votre compte est trop récent, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
             reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
             message.mark_read()
+        else:
+            message.reply("Votre message doit être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
+            reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
+            reportToLamalediction(senderName, message_content)
+            message.mark_read()
 
     # sleep one minute
     time.sleep(30)
