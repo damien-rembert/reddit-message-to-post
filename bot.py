@@ -216,7 +216,7 @@ while True:
         senderDob = datetime.utcfromtimestamp(sender.created_utc)
         # min 72h old
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        seventyTwoH = datetime.utcnow() - datetime.timedelta(hours=72)
         if senderDob >= seventyTwoH:
             senderIsOldEnough = True
 
