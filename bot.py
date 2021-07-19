@@ -3,6 +3,7 @@ import praw
 import time
 import os
 import re
+import datetime
 
 
 
@@ -11,7 +12,11 @@ import re
 # TODO define methods using def
 # TODO define method report things to mods
 # TODO check length of strings from senders
-
+# supprimer le minimum de karma 
+# remplacer istrusted par le critère de 72h 
+# envoyer en modmail que les threads créés
+# prévoir un thread de présentation
+# retirer trusted
 
 def isAdminWord(messageTitle):
     global adminWordList
@@ -155,6 +160,14 @@ while True:
     user_agent=user_agent1,
     username=username1,
     )
+    
+    
+    
+    # initial post
+    # reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
+    # reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
+    # message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
+
 
     # go through unread mail
     for message in reddit.inbox.unread(mark_read=False, limit=None):
@@ -181,6 +194,17 @@ while True:
         sender = message.author
         senderName = message.author.name
 
+        # get sender age
+        senderDob = sender.created_utc
+        now = datetime.datetime.now(datetime.timezone.utc)
+        # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
+        if title == myage:
+            message.reply("DOB: " + senderDob + " now: " + now)
+            message.mark_read()
+            break
+
+
+
         # get redditor karma
         senderKarma = sender.link_karma
 
@@ -202,7 +226,7 @@ while True:
         elif adminMode:
             # admin command 0 Help
             # adminTask(sender,title,body)
-            if title == helpWord:
+            if title == helpWord or title == "Help" or title == "help":
                 message.reply(helpMessage)
                 message.mark_read()
                 break
