@@ -3,9 +3,7 @@ import praw
 import time
 import os
 import re
-import datetime
-
-
+from datetime import datetime
 
 
 
@@ -214,8 +212,10 @@ while True:
 
         # is sender old enough
         # get sender age
-        senderDob = datetime.fromtimestamp(sender.created_utc)
+        # senderDob = datetime.fromtimestamp(sender.created_utc)
+        senderDob = datetime.utcfromtimestamp(sender.created_utc)
         # min 72h old
+        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         if senderDob >= seventyTwoH:
             senderIsOldEnough = True
@@ -229,12 +229,10 @@ while True:
             message.mark_read()
             break
 
-
-        # min 72h old
+        # years
         yearsOld = datetime.utcnow() - timedelta(years=10)
         if senderDob >= yearsOld:
             senderIsOldEnoughYears = True
-
         # now = datetime.datetime.now(datetime.timezone.utc)
         # senderOldEnough = senderAge > minAge
         # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
