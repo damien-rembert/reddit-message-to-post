@@ -128,7 +128,7 @@ def messageModsSuccess(operation, sender, targetName, listo):
     elif operation == unblockWord:
         actionString = removeString
         listName = blockedString
-    reddit.subreddit(selectedSub).message(sender + actionString + listName + ".", bodyString + listName + ":\n\n" + listToString(listo) +  helpSuggestion)
+    # reddit.subreddit(selectedSub).message(sender + actionString + listName + ".", bodyString + listName + ":\n\n" + listToString(listo) +  helpSuggestion)
 
 
 
@@ -328,7 +328,7 @@ while True:
         elif senderKarma >= minKarma or senderIsTrusted:
             if " " in body:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
-                reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
+                # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
             # if "r/***REMOVED***/" in body:
@@ -346,7 +346,7 @@ while True:
                     break
             else:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers r/France")
-                reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
+                # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
         elif senderKarma < minKarma:
