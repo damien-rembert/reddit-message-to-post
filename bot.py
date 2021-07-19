@@ -138,8 +138,8 @@ def messageModsSuccess(operation, sender, targetName, listo):
 # set minimum karma needed
 # minKarma = 50
 # set sub
-# selectedSub = "***REMOVED***"
 selectedSub = "***REMOVED***"
+# selectedSub = "***REMOVED***"
 helpWord = "Help"
 blockWord = "Block"
 unblockWord = "Unblock"
@@ -217,7 +217,7 @@ while True:
         senderDob = datetime.utcfromtimestamp(sender.created_utc)
         # min 72h old
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        seventyTwoH = datetime.utcnow() - timedelta(days=3650)
+        seventyTwoH = datetime.utcnow() - timedelta(days=4000)
         # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         if senderDob >= seventyTwoH:
             senderIsOldEnough = True
