@@ -196,9 +196,10 @@ while True:
 
         # get sender age
         senderDob = sender.created_utc
+        senderAge = 
         now = datetime.datetime.now(datetime.timezone.utc)
         # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
-        if title == myage:
+        if title == "myage":
             message.reply("DOB: " + senderDob + " now: " + now)
             message.mark_read()
             break
