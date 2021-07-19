@@ -197,7 +197,9 @@ while True:
         # get sender age
         senderDob = sender.created_utc
         # senderAge = now - senderDob
+        minAge = 72 * 60 * 60
         now = datetime.datetime.now(datetime.timezone.utc)
+        # senderOldEnough = 
         # reddit.redditor("***REMOVED***").message("test utc", "DOB ***REMOVED***: " + dobLamalediction + " now: " + now)
         if title == "myage":
             message.reply("DOB: " + senderDob + " now: " + now)
