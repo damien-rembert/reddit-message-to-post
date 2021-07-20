@@ -11,13 +11,8 @@ from datetime import timedelta
 # TODO define methods using def
 # TODO define method report things to mods
 # TODO check length of strings from senders
-# DONE supprimer le minimum de karma 
-# DONE remplacer istrusted par le critère de 72h 
-# DONE envoyer en modmail que les threads créés
 # prévoir un thread de présentation
-# add /u/ to senderName
 # cleanEchoTitle
-# DONE retirer trusted
 
 def isAdminWord(messageTitle):
     global adminWordList
@@ -59,26 +54,21 @@ def isOldEnough(redditor):
     # is sender old enough
     # get sender age
     # senderDob = datetime.fromtimestamp(sender.created_utc)
-    senderDob = datetime.utcfromtimestamp(redditor.created_utc)
-    senderIsOldEnough = False
+    redditorDob = datetime.utcfromtimestamp(redditor.created_utc)
+    redditorIsOldEnough = False
+    now = datetime.utcnow()
+    redditorAge = now - redditorDob
     # min 72h old
     # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-    seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+    seventyTwoHAgo = now - timedelta(hours=72)
     # 
-    if senderDob <= seventyTwoH:
+    if senderDob <= seventyTwoHago:
         senderIsOldEnough = True
-        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + )
+        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
     else:
         senderIsOldEnough = False
-        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + )
-            return senderIsOldEnough
-        #     tenYears = datetime.utcnow() - timedelta(days=4000)
-        # # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        # if senderDob >= tenYears:
-        #     senderIsOlder = True
-        # else:
-        #     reddit.redditor("***REMOVED***").message("senderdob is under ten years", str(senderIsOlder))
-
+        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
+    return senderIsOldEnough
 
 
 
@@ -91,10 +81,11 @@ def cleanUrl(dirtyUrl):
     return fullUrl
 
 
-def cleanEchoTitle(dirtyTitle):
-    regexClean = re.search(r"(?:Echo: )(?P<title>.+$)", dirtyUrl)
-    cleanTitle = regexClean.group("title")
-    return cleanTitle
+# def cleanEchoPost(dirtyPost):
+#     regexClean = re.search(r"Titre: (?P<title>.+)Corps: (?P<body>.+$)", dirtyPost)
+#     cleanTitle = regexClean.group("title")
+#     cleanBody = regexClean.group("body")
+#     return cleanTitle
 
 # def adminTrust(sender,title,body):
 #     global trustedList
@@ -239,38 +230,6 @@ while True:
         message_content = "TITRE: " + title + " - CORPS: " + body
 
 
-
-        # is sender old enough
-        # get sender age
-        # senderDob = datetime.fromtimestamp(sender.created_utc)
-        # senderDob = datetime.utcfromtimestamp(sender.created_utc)
-        # min 72h old
-        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        # if senderDob >= seventyTwoH:
-        #     senderIsOldEnough = True
-        #     reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
-
-        # min 72h old
-        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        # tenYears = datetime.utcnow() - timedelta(days=4000)
-        # # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        # if senderDob >= tenYears:
-        #     senderIsOlder = True
-        # else:
-        #     reddit.redditor("***REMOVED***").message("senderdob is under ten years", str(senderIsOlder))
-
-        # senderDob = datetime.utcfromtimestamp(redditor.created_utc)
-        # senderIsOldEnough = False
-        #     # min 72h old
-        #     # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-        # if senderDob >= seventyTwoH:
-        #     senderIsOldEnough = True
-        #     reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
-        # else:
-        #     senderIsOldEnough = False
-        #     reddit.redditor("***REMOVED***").message("senderdob is not over 72h", str(senderIsOldEnough))
 
 
 
