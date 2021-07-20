@@ -12,6 +12,7 @@ from datetime import timedelta
 # TODO define method report things to mods
 # TODO check length of strings from senders
 # cleanEchoTitle
+# /app/bot.py:362: DeprecationWarning: Reddit will check for validation on all posts around May-June 2020. It is recommended to check for validation by setting reddit.validate_on_submit to True.
 
 def isAdminWord(messageTitle):
     global adminWordList
