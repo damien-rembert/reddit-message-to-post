@@ -64,10 +64,10 @@ def isOldEnough(redditor):
     # 
     if redditorDob <= seventyTwoHAgo:
         redditorIsOldEnough = True
-        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
+        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoHAgo) + "now is " + str(now))
     else:
         redditorIsOldEnough = False
-        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
+        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoHAgo) + "now is " + str(now))
     return redditorIsOldEnough
 
 
