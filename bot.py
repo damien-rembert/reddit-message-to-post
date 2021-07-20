@@ -62,7 +62,7 @@ def isOldEnough(redditor):
     # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
     seventyTwoHAgo = now - timedelta(hours=72)
     # 
-    if redditorDob <= seventyTwoHago:
+    if redditorDob <= seventyTwoHAgo:
         redditorIsOldEnough = True
         reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
     else:
@@ -81,10 +81,9 @@ def cleanUrl(dirtyUrl):
     return fullUrl
 
 
-# def cleanEchoPost(dirtyPost):
-#     regexClean = re.search(r"Titre: (?P<title>.+)Corps: (?P<body>.+$)", dirtyPost)
+# def cleanEchoTitle(dirtyTitle):
+#     regexClean = re.search(r"Echo: (?P<title>.+)$)", dirtyTitle)
 #     cleanTitle = regexClean.group("title")
-#     cleanBody = regexClean.group("body")
 #     return cleanTitle
 
 # def adminTrust(sender,title,body):
