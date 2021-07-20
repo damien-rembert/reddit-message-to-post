@@ -12,6 +12,7 @@ from datetime import timedelta
 # TODO define method report things to mods
 # TODO check length of strings from senders
 # cleanEchoTitle
+# remove messageMods calls
 # /app/bot.py:362: DeprecationWarning: Reddit will check for validation on all posts around May-June 2020. It is recommended to check for validation by setting reddit.validate_on_submit to True.
 
 def isAdminWord(messageTitle):
@@ -56,7 +57,7 @@ def isOldEnough(redditor):
     redditorDob = datetime.utcfromtimestamp(redditor.created_utc)
     redditorIsOldEnough = False
     now = datetime.utcnow()
-    redditorAge = now - redditorDob
+    # redditorAge = now - redditorDob
     # min 72h old
     seventyTwoHAgo = now - timedelta(hours=72)
     # 
@@ -131,33 +132,88 @@ def replyAlready(operation, targetName, listo):
         middleString = " n'est pas sur la liste des pseudos bloqués.\n Voici la liste des pseudos bloqués:\n"
     message.reply(targetName + middleString + listToString(listo) +  helpSuggestion)
 
-def messageModsSuccess(operation, sender, targetName, listo):
-    addString = " vient d'ajouter " + targetName + " à la liste des pseudos "
-    removeString = " vient de supprimer " + targetName + " de la liste des pseudos "
-    approvedString = "approuvés"
-    blockedString = "bloqués"
-    bodyString = "Voici la liste des pseudos "
-    if operation == trustWord:
-        actionString = addString
-        listName = approvedString
-    elif operation == distrustWord:
-        actionString = removeString
-        listName = approvedString
-    elif operation == blockWord:
-        actionString = addString
-        listName = blockedString
-    elif operation == unblockWord:
-        actionString = removeString
-        listName = blockedString
-    # reddit.subreddit(selectedSub).message(sender + actionString + listName + ".", bodyString + listName + ":\n\n" + listToString(listo) +  helpSuggestion)
+# def messageModsSuccess(operation, sender, targetName, listo):
+#     addString = " vient d'ajouter " + targetName + " à la liste des pseudos "
+#     removeString = " vient de supprimer " + targetName + " de la liste des pseudos "
+#     approvedString = "approuvés"
+#     blockedString = "bloqués"
+#     bodyString = "Voici la liste des pseudos "
+#     if operation == trustWord:
+#         actionString = addString
+#         listName = approvedString
+#     elif operation == distrustWord:
+#         actionString = removeString
+#         listName = approvedString
+#     elif operation == blockWord:
+#         actionString = addString
+#         listName = blockedString
+#     elif operation == unblockWord:
+#         actionString = removeString
+#         listName = blockedString
+#     reddit.subreddit(selectedSub).message(sender + actionString + listName + ".", bodyString + listName + ":\n\n" + listToString(listo) +  helpSuggestion)
 
+def trustThem(body):
+    global trustedList
+    global trustWord
+    targetList = body.split(",")
+    for target in targetList:
+        if not isTrusted(target):
+            try:
+                reddit.redditor(target).trust()
+            except:
+                message.reply("Il y a eu un problème, merci de vérifier le format.")
+    refreshListTrusted()
+    replySuccess(trustWord, body, trustedList)
+    message.mark_read()
+
+def distrustThem(body):
+    global trustedList
+    global distrustWord
+    targetList = body.split(",")
+    for target in targetList:
+        if isTrusted(target):
+            try:
+                reddit.redditor(target).ditrust()
+            except:
+                message.reply("Il y a eu un problème, merci de vérifier le format.")
+    refreshListTrusted()
+    replySuccess(distrustWord, body, trustedList)
+    message.mark_read()
+
+def blockThem(body):
+    global blockedList
+    global blockWord
+    targetList = body.split(",")
+    for target in targetList:
+        if not isBlocked(target):
+            try:
+                reddit.redditor(target).block()
+            except:
+                message.reply("Il y a eu un problème, merci de vérifier le format.")
+    refreshListBlocked()
+    replySuccess(blockWord, body, blockedList)
+    message.mark_read()
+
+def unblockThem(body):
+    global blockedList
+    global unblockWord
+    targetList = body.split(",")
+    for target in targetList:
+        if isBlocked(target):
+            try:
+                reddit.redditor(target).unblock()
+            except:
+                message.reply("Il y a eu un problème, merci de vérifier le format.")
+    refreshListBlocked()
+    replySuccess(unblockWord, body, blockedList)
+    message.mark_read()
 
 
 # set minimum karma needed
 # minKarma = 50
 # set sub
-# selectedSub = "***REMOVED***"
 selectedSub = "***REMOVED***"
+# selectedSub = "***REMOVED***"
 helpWord = "Help"
 blockWord = "Block"
 unblockWord = "Unblock"
@@ -242,7 +298,6 @@ while True:
         # ignore comments
         if message.was_comment:
             message.mark_read()
-            break
         elif adminMode:
             # admin command 0 Help
             # adminTask(sender,title,body)
@@ -252,17 +307,19 @@ while True:
                 break
             # admin command 1 Trust
             elif title == trustWord:
-                if isTrusted(body):
-                    replyAlready(title, body, trustedList)
-                    message.mark_read()
-                    break
-                else:
-                    reddit.redditor(body).trust()
-                    refreshListTrusted()
-                    replySuccess(title, body, trustedList)
-                    messageModsSuccess(title, senderName, body, trustedList)
-                    message.mark_read()
-                    break
+                trustThem(body)
+
+                # if isTrusted(body):
+                #     replyAlready(title, body, trustedList)
+                #     message.mark_read()
+                #     break
+                # else:
+                #     reddit.redditor(body).trust()
+                #     refreshListTrusted()
+                #     replySuccess(title, body, trustedList)
+                #     # messageModsSuccess(title, senderName, body, trustedList)
+                #     message.mark_read()
+                #     break
                     # try:
                     #     reddit.redditor(body).trust()
                     #     refreshListTrusted()
@@ -277,17 +334,18 @@ while True:
 
             # admin command 2 Distrust
             elif title == distrustWord:
-                if not isTrusted(body):
-                    replyAlready(title, body, trustedList)
-                    message.mark_read()
-                    break
-                else:
-                    reddit.redditor(body).distrust()
-                    refreshListTrusted()
-                    replySuccess(title, body, trustedList)
-                    messageModsSuccess(title, senderName, body, trustedList)
-                    message.mark_read()
-                    break
+                distrustThem(body)
+                # if not isTrusted(body):
+                #     replyAlready(title, body, trustedList)
+                #     message.mark_read()
+                #     break
+                # else:
+                #     reddit.redditor(body).distrust()
+                #     refreshListTrusted()
+                #     replySuccess(title, body, trustedList)
+                #     # messageModsSuccess(title, senderName, body, trustedList)
+                #     message.mark_read()
+                #     break
                     # try:
                     #     reddit.redditor(body).distrust()
                     #     refreshListTrusted()
@@ -302,17 +360,18 @@ while True:
                         
             # admin command 3 Block
             elif title == blockWord:
-                if isBlocked(body):
-                    replyAlready(title, body, blockedList)
-                    message.mark_read()
-                    break
-                else:
-                    reddit.redditor(body).block()
-                    refreshListBlocked()
-                    replySuccess(title, body, blockedList)
-                    messageModsSuccess(title, senderName, body, blockedList)
-                    message.mark_read()
-                    break
+                blockThem(body)
+                # if isBlocked(body):
+                #     replyAlready(title, body, blockedList)
+                #     message.mark_read()
+                #     break
+                # else:
+                #     reddit.redditor(body).block()
+                #     refreshListBlocked()
+                #     replySuccess(title, body, blockedList)
+                #     # messageModsSuccess(title, senderName, body, blockedList)
+                #     message.mark_read()
+                #     break
                     # try:
                     #     reddit.redditor(body).block()
                     #     refreshListBlocked()
@@ -327,17 +386,18 @@ while True:
 
             # admin command 4 unblock
             elif title == unblockWord:
-                if not isBlocked(body):
-                    replyAlready(title, body, blockedList)
-                    message.mark_read()
-                    break
-                else:
-                    reddit.redditor(body).unblock()
-                    refreshListBlocked()
-                    replySuccess(title, body, blockedList)
-                    messageModsSuccess(title, senderName, body, blockedList)
-                    message.mark_read()
-                    break
+                unblockThem(body)
+                # if not isBlocked(body):
+                #     replyAlready(title, body, blockedList)
+                #     message.mark_read()
+                #     break
+                # else:
+                #     reddit.redditor(body).unblock()
+                #     refreshListBlocked()
+                #     replySuccess(title, body, blockedList)
+                #     # messageModsSuccess(title, senderName, body, blockedList)
+                #     message.mark_read()
+                #     break
                     # try:
                     #     reddit.redditor(body).unblock()
                     #     refreshListBlocked()
