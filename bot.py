@@ -62,13 +62,13 @@ def isOldEnough(redditor):
     # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
     seventyTwoHAgo = now - timedelta(hours=72)
     # 
-    if senderDob <= seventyTwoHago:
-        senderIsOldEnough = True
-        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
+    if redditorDob <= seventyTwoHago:
+        redditorIsOldEnough = True
+        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
     else:
-        senderIsOldEnough = False
-        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
-    return senderIsOldEnough
+        redditorIsOldEnough = False
+        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoH) + "now is " + str(now))
+    return redditorIsOldEnough
 
 
 
