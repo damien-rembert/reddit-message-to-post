@@ -61,16 +61,17 @@ def isOldEnough(redditor):
     # senderDob = datetime.fromtimestamp(sender.created_utc)
     senderDob = datetime.utcfromtimestamp(redditor.created_utc)
     senderIsOldEnough = False
-        # min 72h old
-        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+    # min 72h old
+    # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
     seventyTwoH = datetime.utcnow() - timedelta(hours=72)
-    if senderDob >= seventyTwoH:
+    # 
+    if senderDob <= seventyTwoH:
         senderIsOldEnough = True
-        reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
+        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + )
     else:
         senderIsOldEnough = False
-        reddit.redditor("***REMOVED***").message("senderdob is not over 72h", str(senderIsOldEnough))
-    return senderIsOldEnough
+        reddit.redditor("***REMOVED***").message("senderdob is over 72h", "sender dob is " + str(senderDob) + "seventytwo is " + str(seventyTwoH) + )
+            return senderIsOldEnough
         #     tenYears = datetime.utcnow() - timedelta(days=4000)
         # # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
         # if senderDob >= tenYears:
@@ -91,7 +92,7 @@ def cleanUrl(dirtyUrl):
 
 
 def cleanEchoTitle(dirtyTitle):
-    regexClean = re.search(r"(?:Echo: )(?P<title>r/france/.+$)", dirtyUrl)
+    regexClean = re.search(r"(?:Echo: )(?P<title>.+$)", dirtyUrl)
     cleanTitle = regexClean.group("title")
     return cleanTitle
 
@@ -217,7 +218,7 @@ while True:
         message_content = ""
         spacing = " - "
         senderIsTrusted = False
-        senderIsOldEnough = False
+        # senderIsOldEnough = False
         senderIsMod = False
         # senderKarma = 0
         senderName = ""
@@ -258,6 +259,25 @@ while True:
         #     senderIsOlder = True
         # else:
         #     reddit.redditor("***REMOVED***").message("senderdob is under ten years", str(senderIsOlder))
+
+        # senderDob = datetime.utcfromtimestamp(redditor.created_utc)
+        # senderIsOldEnough = False
+        #     # min 72h old
+        #     # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
+        # if senderDob >= seventyTwoH:
+        #     senderIsOldEnough = True
+        #     reddit.redditor("***REMOVED***").message("senderdob is over 72h", str(senderIsOldEnough))
+        # else:
+        #     senderIsOldEnough = False
+        #     reddit.redditor("***REMOVED***").message("senderdob is not over 72h", str(senderIsOldEnough))
+
+
+
+
+
+
+
 
         # is redditor trusted
         # senderIsTrusted = isTrusted(senderName)
