@@ -212,8 +212,8 @@ def unblockThem(body):
 # set minimum karma needed
 # minKarma = 50
 # set sub
-selectedSub = "***REMOVED***"
 # selectedSub = "***REMOVED***"
+selectedSub = "***REMOVED***"
 helpWord = "Help"
 blockWord = "Block"
 unblockWord = "Unblock"
