@@ -11,7 +11,6 @@ from datetime import timedelta
 # TODO define methods using def
 # TODO define method report things to mods
 # TODO check length of strings from senders
-# prévoir un thread de présentation
 # cleanEchoTitle
 
 def isAdminWord(messageTitle):
@@ -53,21 +52,17 @@ def isBlocked(redditorName):
 def isOldEnough(redditor):
     # is sender old enough
     # get sender age
-    # senderDob = datetime.fromtimestamp(sender.created_utc)
     redditorDob = datetime.utcfromtimestamp(redditor.created_utc)
     redditorIsOldEnough = False
     now = datetime.utcnow()
     redditorAge = now - redditorDob
     # min 72h old
-    # seventyTwoH = datetime.utcnow() - timedelta(hours=72)
     seventyTwoHAgo = now - timedelta(hours=72)
     # 
     if redditorDob <= seventyTwoHAgo:
         redditorIsOldEnough = True
-        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoHAgo) + "now is " + str(now))
     else:
         redditorIsOldEnough = False
-        reddit.redditor("***REMOVED***").message("redditorDob is over 72h", "sender dob is " + str(redditorDob) + "seventytwo is " + str(seventyTwoHAgo) + "now is " + str(now))
     return redditorIsOldEnough
 
 
@@ -160,8 +155,8 @@ def messageModsSuccess(operation, sender, targetName, listo):
 # set minimum karma needed
 # minKarma = 50
 # set sub
-selectedSub = "***REMOVED***"
 # selectedSub = "***REMOVED***"
+selectedSub = "***REMOVED***"
 helpWord = "Help"
 blockWord = "Block"
 unblockWord = "Unblock"
