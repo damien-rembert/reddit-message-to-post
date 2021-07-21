@@ -11,9 +11,7 @@ from datetime import timedelta
 # TODO define methods using def
 # TODO define method report things to mods
 # TODO check length of strings from senders
-# cleanEchoTitle
-# remove messageMods calls
-# /app/bot.py:362: DeprecationWarning: Reddit will check for validation on all posts around May-June 2020. It is recommended to check for validation by setting reddit.validate_on_submit to True.
+# TODO cleanEchoTitle method to post for mods
 
 def isAdminWord(messageTitle):
     global adminWordList
@@ -67,9 +65,6 @@ def isOldEnough(redditor):
         redditorIsOldEnough = False
     return redditorIsOldEnough
 
-
-
-
 def cleanUrl(dirtyUrl):
     regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/france/.+$)", dirtyUrl)
     # regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/***REMOVED***/.+$)", dirtyUrl)
@@ -78,14 +73,16 @@ def cleanUrl(dirtyUrl):
     return fullUrl
 
 
-# def cleanEchoTitle(dirtyTitle):
+# def cleanEchoTitle(dirtyBody):
 #     regexClean = re.search(r"Echo: (?P<title>.+)$)", dirtyTitle)
 #     cleanTitle = regexClean.group("title")
 #     return cleanTitle
 
-# def adminTrust(sender,title,body):
-#     global trustedList
-#     global blockedList
+# def cleanEchoBody(dirtyBody):
+#     regexClean = re.search(r"Echo: (?P<title>.+)$)", dirtyTitle)
+#     cleanTitle = regexClean.group("title")
+#     return cleanTitle
+
 
 def listToString(list):
     x = ""
@@ -161,7 +158,8 @@ def trustThem(body):
             try:
                 reddit.redditor(target).trust()
             except:
-                message.reply("Il y a eu un problème, merci de vérifier le format.")
+                message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
+                reportToLamalediction("un modérateur pour loop/trust", "avec l'élément suivant: " + target)
     refreshListTrusted()
     replySuccess(trustWord, body, trustedList)
     message.mark_read()
@@ -175,7 +173,8 @@ def distrustThem(body):
             try:
                 reddit.redditor(target).ditrust()
             except:
-                message.reply("Il y a eu un problème, merci de vérifier le format.")
+                message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
+                reportToLamalediction("un modérateur pour loop/distrust", "avec l'élément suivant: " + target)
     refreshListTrusted()
     replySuccess(distrustWord, body, trustedList)
     message.mark_read()
@@ -189,7 +188,8 @@ def blockThem(body):
             try:
                 reddit.redditor(target).block()
             except:
-                message.reply("Il y a eu un problème, merci de vérifier le format.")
+                message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
+                reportToLamalediction("un modérateur pour loop/block", "avec l'élément suivant: " + target)
     refreshListBlocked()
     replySuccess(blockWord, body, blockedList)
     message.mark_read()
@@ -203,7 +203,8 @@ def unblockThem(body):
             try:
                 reddit.redditor(target).unblock()
             except:
-                message.reply("Il y a eu un problème, merci de vérifier le format.")
+                message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
+                reportToLamalediction("un modérateur pour loop/unblock", "avec l'élément suivant: " + target)
     refreshListBlocked()
     replySuccess(unblockWord, body, blockedList)
     message.mark_read()
@@ -219,6 +220,8 @@ blockWord = "Block"
 unblockWord = "Unblock"
 trustWord = "Trust"
 distrustWord = "Distrust"
+# echoWord = "Echo"
+# adminWordList = [helpWord, blockWord, unblockWord, trustWord, distrustWord, echoWord]
 adminWordList = [helpWord, blockWord, unblockWord, trustWord, distrustWord]
 
 
@@ -237,6 +240,7 @@ while True:
     user_agent=user_agent1,
     username=username1,
     )
+    reddit.validate_on_submit = True
     
     
     
@@ -281,14 +285,6 @@ while True:
         message_content = "TITRE: " + title + " - CORPS: " + body
 
 
-
-
-
-
-
-
-
-
         # is redditor trusted
         # senderIsTrusted = isTrusted(senderName)
         # is redditor a mod
@@ -309,112 +305,25 @@ while True:
             elif title == trustWord:
                 trustThem(body)
 
-                # if isTrusted(body):
-                #     replyAlready(title, body, trustedList)
-                #     message.mark_read()
-                #     break
-                # else:
-                #     reddit.redditor(body).trust()
-                #     refreshListTrusted()
-                #     replySuccess(title, body, trustedList)
-                #     # messageModsSuccess(title, senderName, body, trustedList)
-                #     message.mark_read()
-                #     break
-                    # try:
-                    #     reddit.redditor(body).trust()
-                    #     refreshListTrusted()
-                    #     replySuccess(title, body, trustedList)
-                    #     messageModsSuccess(title, senderName, body, trustedList)
-                    #     message.mark_read()
-                    #     break
-                    # except:
-                    #     reportToLamalediction(sender, message_content)
-                    #     message.mark_read()
-                    #     break
-
             # admin command 2 Distrust
             elif title == distrustWord:
                 distrustThem(body)
-                # if not isTrusted(body):
-                #     replyAlready(title, body, trustedList)
-                #     message.mark_read()
-                #     break
-                # else:
-                #     reddit.redditor(body).distrust()
-                #     refreshListTrusted()
-                #     replySuccess(title, body, trustedList)
-                #     # messageModsSuccess(title, senderName, body, trustedList)
-                #     message.mark_read()
-                #     break
-                    # try:
-                    #     reddit.redditor(body).distrust()
-                    #     refreshListTrusted()
-                    #     replySuccess(title, body, trustedList)
-                    #     messageModsSuccess(title, senderName, body, trustedList)
-                    #     message.mark_read()
-                    #     break
-                    # except:
-                    #     reportToLamalediction(senderName, message_content)
-                    #     message.mark_read()
-                    #     break
                         
             # admin command 3 Block
             elif title == blockWord:
                 blockThem(body)
-                # if isBlocked(body):
-                #     replyAlready(title, body, blockedList)
-                #     message.mark_read()
-                #     break
-                # else:
-                #     reddit.redditor(body).block()
-                #     refreshListBlocked()
-                #     replySuccess(title, body, blockedList)
-                #     # messageModsSuccess(title, senderName, body, blockedList)
-                #     message.mark_read()
-                #     break
-                    # try:
-                    #     reddit.redditor(body).block()
-                    #     refreshListBlocked()
-                    #     replySuccess(title, body, blockedList)
-                    #     messageModsSuccess(title, senderName, body, blockedList)
-                    #     message.mark_read()
-                    #     break
-                    # except:
-                    #     reportToLamalediction(senderName, message_content)
-                    #     message.mark_read()
-                    #     break
 
             # admin command 4 unblock
             elif title == unblockWord:
                 unblockThem(body)
-                # if not isBlocked(body):
-                #     replyAlready(title, body, blockedList)
-                #     message.mark_read()
-                #     break
-                # else:
-                #     reddit.redditor(body).unblock()
-                #     refreshListBlocked()
-                #     replySuccess(title, body, blockedList)
-                #     # messageModsSuccess(title, senderName, body, blockedList)
-                #     message.mark_read()
-                #     break
-                    # try:
-                    #     reddit.redditor(body).unblock()
-                    #     refreshListBlocked()
-                    #     replySuccess(title, body, blockedList)
-                    #     messageModsSuccess(title, senderName, body, blockedList)
-                    #     message.mark_read()
-                    #     break
-                    # except:
-                    #     reportToLamalediction(senderName, message_content)
-                    #     message.mark_read()
-                    #     break
 
-                # message.mark_read()
+            # # admin command 5 echo
+            # elif title == echoWord:
+            #     unblockThem(body)
+
         elif isOldEnough(sender):
             if " " in body:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur /r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers /r/France")
-                # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
             # if "r/***REMOVED***/" in body:
@@ -441,6 +350,7 @@ while True:
                 # reddit.subreddit(selectedSub).message(senderName + " a essayé de poster un message sans lien vers r/France:", message_content + helpSuggestion)
                 message.mark_read()
                 break
+
         elif not isOldEnough(sender):
             message.reply("Votre compte est trop récent, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
             reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
