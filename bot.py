@@ -67,7 +67,6 @@ def isOldEnough(redditor):
 
 def cleanUrl(dirtyUrl):
     regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/france/.+$)", dirtyUrl)
-    # regexClean = re.search(r"(?:http|https)?(?:www|np.reddit.com)?(:?/)?(?P<url>r/***REMOVED***/.+$)", dirtyUrl)
     baseUrl = regexClean.group("url")
     fullUrl = "https://np.reddit.com/" + baseUrl
     return fullUrl
@@ -103,9 +102,6 @@ def refreshListBlocked():
     global blockedList
     blockedList = reddit.user.blocked()
     time.sleep(1)
-
-def reportToLamalediction(senderName,content):
-    reddit.redditor("***REMOVED***").message("/u/" + senderName + " a envoyé un message qui a rencontré une erreur", content)
 
 def replySuccess(operation, targetName, listo):
     if operation == trustWord:
@@ -159,7 +155,6 @@ def trustThem(body):
                 reddit.redditor(target).trust()
             except:
                 message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
-                reportToLamalediction("un modérateur pour loop/trust", "avec l'élément suivant: " + target)
     refreshListTrusted()
     replySuccess(trustWord, body, trustedList)
     message.mark_read()
@@ -174,7 +169,6 @@ def distrustThem(body):
                 reddit.redditor(target).ditrust()
             except:
                 message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
-                reportToLamalediction("un modérateur pour loop/distrust", "avec l'élément suivant: " + target)
     refreshListTrusted()
     replySuccess(distrustWord, body, trustedList)
     message.mark_read()
@@ -189,7 +183,6 @@ def blockThem(body):
                 reddit.redditor(target).block()
             except:
                 message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
-                reportToLamalediction("un modérateur pour loop/block", "avec l'élément suivant: " + target)
     refreshListBlocked()
     replySuccess(blockWord, body, blockedList)
     message.mark_read()
@@ -204,7 +197,6 @@ def unblockThem(body):
                 reddit.redditor(target).unblock()
             except:
                 message.reply("Il y a eu un problème avec " + target + ", merci de vérifier le format.")
-                reportToLamalediction("un modérateur pour loop/unblock", "avec l'élément suivant: " + target)
     refreshListBlocked()
     replySuccess(unblockWord, body, blockedList)
     message.mark_read()
@@ -213,8 +205,7 @@ def unblockThem(body):
 # set minimum karma needed
 # minKarma = 50
 # set sub
-# selectedSub = "***REMOVED***"
-selectedSub = "***REMOVED***"
+selectedSub = "MerdeInFrance"
 helpWord = "Help"
 blockWord = "Block"
 unblockWord = "Unblock"
@@ -231,7 +222,7 @@ while True:
     client_secret1 = os.environ['SECRETCLIENT']
     password1 = os.environ['MDP']
     username1 = os.environ['NOM']
-    user_agent1 = "heroku:inmailtopost:v0.1 (by /u/***REMOVED***)"
+    user_agent1 = "heroku:inmailtopost:v0.1 (by /u/Postier_anonyme)"
 
     reddit = praw.Reddit(
     client_id=client_id1,
@@ -247,7 +238,7 @@ while True:
     # initial post
     # reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
     # reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
-    # message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
+    # message.reply("Merci, votre message devrait apparaître sur r/MerdeInFrance dans moins d'une minute!")
 
 
     # go through unread mail
@@ -269,7 +260,7 @@ while True:
         # senderKarma = 0
         senderName = ""
         helpSuggestion = "\n\n\n**********************\n\n\nPour plus de détails sur les fonctions de ce bot ou pour afficher les listes de pseudos approuvés et bloqués, envoyez-lui un message ayant pour objet **" + helpWord + "** (et n'importe quoi dans le corps du message)."
-        helpMessage = "Bonjour,\n\n\nEn tant que mod de /r/***REMOVED***, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\n\n\n\nLes autres options servent à la gestion des personnes qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le pseudo (sans /u/) dans le corps du message. Pour bloquer plusieurs personnes avec un seul message, le corps du message doit contenir les pseudos séparés par des virgules sans espaces.\n\n**" + blockWord + "**, pour ajouter un pseudo à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\nCe bot a été crée par /u/***REMOVED***, n'hésitez pas à le contacter au besoin!\n\n\nVoici la liste des pseudos bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
+        helpMessage = "Bonjour,\n\n\nEn tant que mod de /r/MerdeInFrance, vous pouvez utiliser plusieurs fonctions spéciales de ce bot.\nPour cela il suffit d'envoyer un message à ce bot avec pour objet:\n\n**" + helpWord + "**, pour recevoir ce message, qui définit les différentes options.\n\n\n\nLes autres options servent à la gestion des personnes qui utilisent le bot. Ces fonctions s'utilisent en mettant un mot-clé en objet (première lettre majuscule et le reste en minuscule) et le pseudo (sans /u/) dans le corps du message. Pour bloquer plusieurs personnes avec un seul message, le corps du message doit contenir les pseudos séparés par des virgules sans espaces.\n\n**" + blockWord + "**, pour ajouter un pseudo à la liste de spam du bot et que ses messages soient refusés automatiquement.\n\n**" + unblockWord + "**, pour retirer une personne de cette liste.\n\n\nVoici la liste des pseudos bloqués:\n\n" + listToString(blockedList) +  helpSuggestion  
 
 
         # get sender name
@@ -326,23 +317,21 @@ while True:
                 message.reply("Ce bot n'accepte actuellement que les message dont le corps contient uniquement un lien vers un post ou un commentaire sur /r/France.\n\n\nMerci d'envoyer un nouveau message ayant pour objet le titre souhaité pour le post et pour corps un lien vers /r/France")
                 message.mark_read()
                 break
-            # if "r/***REMOVED***/" in body:
             elif "r/france/" in body:
                 cleanedUrl = cleanUrl(body)
                 reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
                 reddit.subreddit(selectedSub).message("/u/" + senderName + " vient de poster sur /r/" + selectedSub + ":", message_content + helpSuggestion)
-                message.reply("Merci, votre message devrait apparaître sur /r/***REMOVED*** dans moins d'une minute!")
+                message.reply("Merci, votre message devrait apparaître sur /r/MerdeInFrance dans moins d'une minute!")
                 message.mark_read()
                 break
                 # try:
                 #     cleanedUrl = cleanUrl(body)
                 #     reddit.subreddit(selectedSub).submit(title, url=cleanedUrl)
                 #     reddit.subreddit(selectedSub).message(senderName + " vient de poster sur r/" + selectedSub + ":", message_content + helpSuggestion)
-                #     message.reply("Merci, votre message devrait apparaître sur r/***REMOVED*** dans moins d'une minute!")
+                #     message.reply("Merci, votre message devrait apparaître sur r/MerdeInFrance dans moins d'une minute!")
                 #     message.mark_read()
                 #     break
                 # except:
-                #     reportToLamalediction(senderName, message_content)
                 #     message.mark_read()
                 #     break
             else:
@@ -352,13 +341,12 @@ while True:
                 break
 
         elif not isOldEnough(sender):
-            message.reply("Votre compte est trop récent, votre message doit donc être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
+            message.reply("Votre compte est trop récent, votre message doit donc être approuvé par la modération de /r/MerdeInFrance. Merci de patienter un peu!")
             reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais son compte est trop récent" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
             message.mark_read()
         else:
-            message.reply("Votre message doit être approuvé par la modération de /r/***REMOVED***. Merci de patienter un peu!")
+            message.reply("Votre message doit être approuvé par la modération de /r/MerdeInFrance. Merci de patienter un peu!")
             reddit.subreddit(selectedSub).message("/u/" + senderName + " a essayé de poster un message mais il y a eu un problème" , "Post à contrôler et à renvoyer pour /u/" + senderName + "?) - " + message_content + helpSuggestion)
-            reportToLamalediction(senderName, message_content)
             message.mark_read()
 
     # sleep one minute
